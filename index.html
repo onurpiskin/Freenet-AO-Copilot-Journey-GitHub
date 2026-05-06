@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>freenet AG — GitHub Teams to Enterprise & Copilot Journey</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-card: #161b22;
+    --bg-card-hover: #1c2129;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-green: #3fb950;
+    --accent-purple: #bc8cff;
+    --accent-orange: #d29922;
+    --accent-red: #f85149;
+    --gradient-github: linear-gradient(135deg, #58a6ff 0%, #3fb950 100%);
+    --gradient-copilot: linear-gradient(135deg, #bc8cff 0%, #58a6ff 100%);
+    --gradient-enterprise: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+    --gradient-partner: linear-gradient(135deg, #d29922 0%, #f85149 100%);
+    --gradient-msft: linear-gradient(135deg, #0078d4 0%, #00b4d8 100%);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(13,17,23,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  nav .logo { font-weight: 700; font-size: 1.05rem; background: var(--gradient-github); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  nav .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  nav .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+  nav .nav-links a:hover, nav .nav-links a.active { color: var(--accent); }
+  @media(max-width:768px){ nav .nav-links { display: none; } }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 6rem 2rem 4rem; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 30%, rgba(88,166,255,0.12) 0%, transparent 55%), radial-gradient(ellipse at 70% 60%, rgba(63,185,80,0.08) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(188,140,255,0.08) 0%, transparent 40%); }
+  .hero-content { position: relative; max-width: 950px; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 1rem; border-radius: 100px; border: 1px solid var(--border); color: var(--accent); font-size: 0.8rem; margin-bottom: 1.5rem; letter-spacing: 0.5px; }
+  .hero h1 { font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+  .hero h1 .gh-word { background: var(--gradient-github); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero h1 .copilot-word { background: var(--gradient-copilot); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero h1 .ent-word { background: var(--gradient-enterprise); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .subtitle { font-size: 1.15rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 2.5rem; }
+  .arrow-down { display: inline-block; margin-top: 2rem; animation: bounce 2s infinite; color: var(--text-muted); font-size: 1.5rem; text-decoration: none; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(10px)} }
+
+  /* STATS */
+  .stats-bar { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; padding: 3rem 2rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-card); }
+  .stat { text-align: center; }
+  .stat .num { font-size: 2.2rem; font-weight: 800; background: var(--gradient-github); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .stat .label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; line-height: 1.2; margin-bottom: 1rem; }
+  .section-sub { color: var(--text-muted); font-size: 1.05rem; max-width: 700px; margin-bottom: 3rem; }
+
+  /* CARDS */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; transition: all 0.2s; }
+  .card:hover { background: var(--bg-card-hover); border-color: var(--accent); transform: translateY(-2px); }
+  .card-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .card p { color: var(--text-muted); font-size: 0.9rem; }
+  .card ul { list-style: none; margin-top: 0.75rem; }
+  .card ul li { color: var(--text-muted); font-size: 0.87rem; padding: 0.2rem 0; display: flex; align-items: flex-start; gap: 0.5rem; }
+  .card ul li.check::before { content: '✓'; color: var(--accent-green); font-weight: 700; flex-shrink: 0; }
+  .card ul li.cross::before { content: '✗'; color: var(--accent-red); font-weight: 700; flex-shrink: 0; }
+  .card ul li.arrow::before { content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+  /* TEAMS VS ENTERPRISE */
+  .compare-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+  @media(max-width:700px){ .compare-split { grid-template-columns: 1fr; } }
+  .compare-col { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; }
+  .compare-col.teams { border-color: #30363d; }
+  .compare-col.enterprise { border-color: var(--accent-green); }
+  .compare-col h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+  .tag { font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 100px; font-weight: 600; }
+  .tag-gray { background: rgba(139,148,158,0.15); color: var(--text-muted); }
+  .tag-green { background: rgba(63,185,80,0.15); color: var(--accent-green); }
+  .feature-row { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+  .feature-row:last-child { border-bottom: none; }
+  .feature-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .feature-text h4 { font-size: 0.9rem; font-weight: 600; }
+  .feature-text p { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.1rem; }
+
+  /* COPILOT UNLOCK */
+  .copilot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .copilot-card { background: linear-gradient(135deg, rgba(188,140,255,0.06) 0%, rgba(88,166,255,0.04) 100%); border: 1px solid rgba(188,140,255,0.2); border-radius: 12px; padding: 1.5rem; }
+  .copilot-card:hover { border-color: var(--accent-purple); transform: translateY(-2px); transition: all 0.2s; }
+  .copilot-card .cop-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+  .copilot-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .copilot-card p { font-size: 0.83rem; color: var(--text-muted); }
+  .copilot-card .ent-only { display: inline-block; margin-top: 0.5rem; font-size: 0.7rem; font-weight: 600; padding: 0.1rem 0.5rem; border-radius: 100px; background: rgba(63,185,80,0.12); color: var(--accent-green); }
+
+  /* HACKATHON */
+  .hack-highlight { margin-top: 2.5rem; background: linear-gradient(135deg, rgba(188,140,255,0.08) 0%, rgba(88,166,255,0.06) 100%); border: 1px solid rgba(188,140,255,0.3); border-radius:14px; padding:2rem; text-align:center; }
+  .hack-stats { display:flex; justify-content:center; gap:3rem; flex-wrap:wrap; margin-top: 1.5rem; }
+  .hack-stat .num { font-size:2rem; font-weight:800; }
+  .hack-stat .lbl { font-size:0.8rem; color:var(--text-muted); margin-top: 0.2rem; }
+
+  /* PROGRAMS */
+  .program-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+  .program-card { border-radius: 14px; padding: 2rem; border: 1px solid var(--border); }
+  .program-card.factory { background: linear-gradient(135deg, rgba(0,120,212,0.08) 0%, rgba(0,180,216,0.04) 100%); border-color: rgba(0,120,212,0.3); }
+  .program-card.accelerator { background: linear-gradient(135deg, rgba(210,153,34,0.08) 0%, rgba(248,81,73,0.04) 100%); border-color: rgba(210,153,34,0.3); }
+  .prog-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+  .prog-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+  .prog-icon.msft { background: rgba(0,120,212,0.15); }
+  .prog-icon.partner { background: rgba(210,153,34,0.15); }
+  .program-card h3 { font-size: 1.2rem; font-weight: 700; }
+  .prog-tag { font-size: 0.72rem; font-weight: 600; padding: 0.15rem 0.6rem; border-radius: 100px; margin-top: 0.2rem; display: inline-block; }
+  .prog-tag-msft { background: rgba(0,120,212,0.15); color: #60bfff; }
+  .prog-tag-partner { background: rgba(210,153,34,0.15); color: var(--accent-orange); }
+  .prog-items { list-style: none; margin-top: 1rem; }
+  .prog-items li { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.45rem 0; font-size: 0.88rem; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  .prog-items li:last-child { border-bottom: none; }
+  .prog-items li::before { content: '→'; color: var(--accent); flex-shrink: 0; }
+  .prog-highlight { margin-top: 1.25rem; padding: 0.9rem 1.1rem; border-radius: 8px; font-size: 0.88rem; font-weight: 600; }
+  .prog-highlight.msft-hl { background: rgba(0,120,212,0.1); color: #60bfff; border-left: 3px solid #0078d4; }
+  .prog-highlight.partner-hl { background: rgba(210,153,34,0.1); color: var(--accent-orange); border-left: 3px solid var(--accent-orange); }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 2rem; margin-top: 2rem; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .timeline-item { position: relative; padding: 0 0 2rem 1.5rem; }
+  .timeline-item::before { content: ''; position: absolute; left: -2rem; top: 0.4rem; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
+  .timeline-item h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .timeline-item p { color: var(--text-muted); font-size: 0.87rem; }
+  .tl-badge { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.72rem; font-weight: 600; background: rgba(88,166,255,0.1); color: var(--accent); margin-bottom: 0.4rem; }
+
+  /* PARTNER BAND */
+  .partner-band { background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 3rem 2rem; text-align: center; }
+  .partner-band h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .partner-band p { color: var(--text-muted); max-width: 600px; margin: 0 auto 2rem; }
+  .partner-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+  .partner-pill { padding: 0.5rem 1.25rem; border-radius: 100px; border: 1px solid var(--border); font-size: 0.85rem; color: var(--text-muted); background: var(--bg); }
+  .partner-pill.hl { border-color: var(--accent-orange); color: var(--accent-orange); background: rgba(210,153,34,0.08); font-weight: 600; }
+
+  /* JOURNEY */
+  .journey { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; margin: 2rem 0; }
+  .journey-step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.5rem; text-align: center; min-width: 140px; }
+  .journey-step .js-num { font-size: 1.5rem; font-weight: 800; background: var(--gradient-github); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .journey-step .js-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
+  .journey-arrow { font-size: 1.5rem; color: var(--text-muted); padding: 0 0.5rem; }
+
+  /* CTA */
+  .cta-section { text-align: center; padding: 5rem 2rem; }
+  .cta-section h2 { font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; }
+  .cta-section p { color: var(--text-muted); margin-bottom: 2rem; font-size: 1.05rem; }
+  .cta-btn { display: inline-block; padding: 0.85rem 2.5rem; border-radius: 8px; font-weight: 700; font-size: 1rem; text-decoration: none; background: var(--gradient-github); color: #000; transition: opacity 0.2s; }
+  .cta-btn:hover { opacity: 0.85; }
+
+  footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.82rem; }
+
+  .badge { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 100px; font-size: 0.72rem; font-weight: 600; }
+  .badge-green { background: rgba(63,185,80,0.15); color: var(--accent-green); }
+  .badge-red { background: rgba(248,81,73,0.15); color: var(--accent-red); }
+  .badge-purple { background: rgba(188,140,255,0.15); color: var(--accent-purple); }
+  .badge-orange { background: rgba(210,153,34,0.15); color: var(--accent-orange); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">⬡ GitHub Enterprise · freenet AG</div>
+  <ul class="nav-links">
+    <li><a href="#intro">Introduction</a></li>
+    <li><a href="#teams-vs-ent">Teams vs Enterprise</a></li>
+    <li><a href="#copilot">Copilot</a></li>
+    <li><a href="#hackathon">Hackathon</a></li>
+    <li><a href="#accelerator">Accelerator</a></li>
+    <li><a href="#factory">Cloud Factory</a></li>
+    <li><a href="#next">Next Steps</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🚀 Microsoft × GitHub · freenet AG · 2026</div>
+    <h1>Unlock the full power of<br><span class="copilot-word">GitHub Copilot</span><br>with <span class="ent-word">GitHub Enterprise</span></h1>
+    <p class="subtitle">freenet AG is already on GitHub Teams. The next step — GitHub Enterprise — unlocks the governance, security, and AI capabilities needed to transform developer productivity at scale.</p>
+    <a href="#intro" class="arrow-down">↓</a>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="num">55%</div><div class="label">Faster task completion with Copilot</div></div>
+  <div class="stat"><div class="num">46%</div><div class="label">New code written by AI</div></div>
+  <div class="stat"><div class="num">77%</div><div class="label">Fortune 100 on GitHub Enterprise</div></div>
+  <div class="stat"><div class="num">€30K</div><div class="label">Max Microsoft migration funding</div></div>
+  <div class="stat"><div class="num">€0</div><div class="label">Cloud Factory cost to customer</div></div>
+</div>
+
+<!-- INTRO -->
+<section id="intro">
+  <div class="section-label">Introduction</div>
+  <h2 class="section-title">Maximizing Copilot starts with GitHub Enterprise</h2>
+  <p class="section-sub">GitHub Teams is a great starting point — but to unlock the full potential of Copilot and enterprise-grade security, the move to GitHub Enterprise is the critical next step.</p>
+
+  <div class="journey">
+    <div class="journey-step"><div class="js-num">1</div><div class="js-label">GitHub Teams<br><span style="color:var(--text-muted);font-size:0.72rem;">Current state</span></div></div>
+    <div class="journey-arrow">→</div>
+    <div class="journey-step" style="border-color:var(--accent-purple)"><div class="js-num" style="background:var(--gradient-copilot);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">2</div><div class="js-label">Copilot Hackathon<br><span style="color:var(--accent-purple);font-size:0.72rem;">Drive adoption</span></div></div>
+    <div class="journey-arrow">→</div>
+    <div class="journey-step" style="border-color:var(--accent-orange)"><div class="js-num" style="background:var(--gradient-partner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">3</div><div class="js-label">Accelerator Program<br><span style="color:var(--accent-orange);font-size:0.72rem;">Partner-funded</span></div></div>
+    <div class="journey-arrow">→</div>
+    <div class="journey-step" style="border-color:#0078d4"><div class="js-num" style="background:var(--gradient-msft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">4</div><div class="js-label">Cloud Factory<br><span style="color:#60bfff;font-size:0.72rem;">MSFT-funded</span></div></div>
+    <div class="journey-arrow">→</div>
+    <div class="journey-step" style="border-color:var(--accent-green)"><div class="js-num" style="background:var(--gradient-github);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">5</div><div class="js-label">GitHub Enterprise<br><span style="color:var(--accent-green);font-size:0.72rem;">Full potential</span></div></div>
+  </div>
+
+  <div class="card-grid" style="margin-top:3rem;">
+    <div class="card">
+      <div class="card-icon">🔐</div>
+      <h3>Enterprise Security at Scale</h3>
+      <p>GitHub Advanced Security (GHAS) — CodeQL, secret scanning, push protection, and Copilot Autofix — requires GitHub Enterprise.</p>
+      <ul>
+        <li class="check">CodeQL — deepest SAST in the industry</li>
+        <li class="check">Secret scanning with push protection</li>
+        <li class="check">Copilot Autofix — one-click remediation</li>
+        <li class="cross">Not available on GitHub Teams</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏢</div>
+      <h3>Entra ID & SSO Integration</h3>
+      <p>GitHub Enterprise supports deep Entra ID (Azure AD) integration for seamless SSO, SCIM provisioning, and team sync.</p>
+      <ul>
+        <li class="check">SAML SSO via Entra ID</li>
+        <li class="check">SCIM automated user provisioning</li>
+        <li class="check">Team sync with AD groups</li>
+        <li class="cross">GitHub Teams: no SCIM, limited SSO</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h3>Governance & Compliance</h3>
+      <p>Enterprise-wide policies, audit logs, and compliance tooling — essential for regulated industries like telecoms.</p>
+      <ul>
+        <li class="check">Enterprise-wide policy enforcement</li>
+        <li class="check">Audit log streaming to SIEM</li>
+        <li class="check">IP allow lists & network controls</li>
+        <li class="cross">GitHub Teams: limited governance</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <h3>Full Copilot Integration</h3>
+      <p>Copilot Enterprise, Coding Agent, PR summaries, and custom knowledge bases are exclusive to GitHub Enterprise.</p>
+      <ul>
+        <li class="check">Copilot Enterprise tier (full feature set)</li>
+        <li class="check">Copilot Coding Agent — autonomous dev</li>
+        <li class="check">Enterprise knowledge bases</li>
+        <li class="cross">GitHub Teams: Copilot Business only</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌍</div>
+      <h3>EU Data Residency</h3>
+      <p>GitHub Enterprise Cloud with Proxima keeps all code, metadata, and AI interactions hosted in the EU — GDPR-compliant by design.</p>
+      <ul>
+        <li class="check">EU-hosted (Germany / Netherlands)</li>
+        <li class="check">GDPR-compliant data residency</li>
+        <li class="check">SOC 2 Type II & ISO 27001</li>
+        <li class="cross">GitHub Teams: US-hosted only</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <h3>Scalability & Management</h3>
+      <p>Manage thousands of developers across multiple organisations from a single enterprise account — built to scale with freenet.</p>
+      <ul>
+        <li class="check">Multi-org management from one account</li>
+        <li class="check">Centralised license management</li>
+        <li class="check">Enterprise Teams across all orgs</li>
+        <li class="cross">GitHub Teams: single org only</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- TEAMS VS ENTERPRISE -->
+<section id="teams-vs-ent">
+  <div class="section-label">Platform Comparison</div>
+  <h2 class="section-title">GitHub Teams vs GitHub Enterprise</h2>
+  <p class="section-sub">freenet is already on GitHub — the upgrade to Enterprise unlocks capabilities that are simply not available on Teams.</p>
+
+  <div class="compare-split">
+    <div class="compare-col teams">
+      <h3>⬡ GitHub Teams <span class="tag tag-gray">Current</span></h3>
+      <div class="feature-row">
+        <div class="feature-icon" style="color:var(--accent-red)">✗</div>
+        <div class="feature-text"><h4>No Entra ID / SCIM</h4><p>Manual user management. No automated provisioning from Azure AD.</p></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon" style="color:var(--accent-red)">✗</div>
+        <div class="feature-text"><h4>No GHAS / CodeQL</h4><p>GitHub Advanced Security is an Enterprise-only product.</p></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon" style="color:var(--accent-red)">✗</div>
+        <div class="feature-text"><h4>No Copilot Enterprise</h4><p>Limited to Copilot Business. No knowledge bases, no Coding Agent.</p></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon" style="color:var(--accent-red)">✗</div>
+        <div class="feature-text"><h4>No EU Data Residency</h4><p>All data hosted in the US. Not suitable for strict GDPR requirements.</p></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon" style="color:var(--accent-red)">✗</div>
+        <div class="feature-text"><h4>Limited Governance</h4><p>No enterprise-wide policy enforcement or audit log streaming.</p></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon" style="color:var(--accent-orange)">⚠️</div>
+        <div class="feature-text"><h4>Single Organisation Only</h4><p>Cannot manage multiple orgs under one enterprise account.</p></div>
+      </div>
+    </div>
+
+    <div class="compare-col enterprise">
+      <h3>⬡ GitHub Enterprise <span class="tag tag-green">Target</span></h3>
+      <div class="feature-row">
+        <div class="feature-icon" style="color:var(--accent-green)">✓</div>
+        <div class="feature-text"><h4>Entra ID SSO + SCIM</h4><p>Automated provisioning, team sync with Azure AD groups, SAML SSO.</p></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon" style="color:var(--accent-green)">✓</div>
+        <div class="feature-text"><h4>Full GHAS + CodeQL</h4><p>Secret scanning, code scanning, supply chain security, Autofix.</p></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon" style="color:var(--accent-green)">✓</div>
+        <div class="feature-text"><h4>Copilot Enterprise</h4><p>Coding Agent, knowledge bases, PR summaries, agentic workflows.</p></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon" style="color:var(--accent-green)">✓</div>
+        <div class="feature-text"><h4>EU Data Residency (Proxima)</h4><p>All data — code, AI interactions, metadata — stored in the EU.</p></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon" style="color:var(--accent-green)">✓</div>
+        <div class="feature-text"><h4>Enterprise Governance</h4><p>Policy enforcement, audit log streaming, IP allow lists, compliance.</p></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon" style="color:var(--accent-green)">✓</div>
+        <div class="feature-text"><h4>Multi-Org Management</h4><p>Manage all organisations and licences from one enterprise account.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COPILOT -->
+<section id="copilot">
+  <div class="section-label">AI-Powered Development</div>
+  <h2 class="section-title">Unlock the Full Potential of Copilot</h2>
+  <p class="section-sub">GitHub Enterprise is the foundation that enables every Copilot capability — from day-to-day code completions to autonomous agentic development.</p>
+
+  <div class="copilot-grid">
+    <div class="copilot-card">
+      <div class="cop-icon">✍️</div>
+      <h4>Code Completions</h4>
+      <p>Multi-line, context-aware completions in all major IDEs. 40+ languages. Available on Teams & Enterprise.</p>
+    </div>
+    <div class="copilot-card">
+      <div class="cop-icon">💬</div>
+      <h4>Copilot Chat</h4>
+      <p>Ask questions about code, generate functions, explain logic — in IDE, terminal, or GitHub.com.</p>
+    </div>
+    <div class="copilot-card">
+      <div class="cop-icon">🔍</div>
+      <h4>Copilot for PRs</h4>
+      <p>AI-generated PR summaries, automated review suggestions, intelligent reviewer recommendations.</p>
+      <span class="ent-only">Enterprise only</span>
+    </div>
+    <div class="copilot-card">
+      <div class="cop-icon">🤖</div>
+      <h4>Copilot Coding Agent</h4>
+      <p>Assign GitHub issues to Copilot — it creates branches, writes code, opens PRs, and runs CI autonomously.</p>
+      <span class="ent-only">Enterprise only</span>
+    </div>
+    <div class="copilot-card">
+      <div class="cop-icon">🛡️</div>
+      <h4>Security Autofix</h4>
+      <p>GHAS finds vulnerabilities, Copilot generates the fix — directly in the PR. One-click remediation.</p>
+      <span class="ent-only">Enterprise + GHAS only</span>
+    </div>
+    <div class="copilot-card">
+      <div class="cop-icon">🧠</div>
+      <h4>Enterprise Knowledge Base</h4>
+      <p>Copilot learns freenet's internal APIs, architecture patterns, and coding standards for contextual answers.</p>
+      <span class="ent-only">Enterprise only</span>
+    </div>
+    <div class="copilot-card">
+      <div class="cop-icon">🔧</div>
+      <h4>CLI & Terminal</h4>
+      <p>Explain commands, generate scripts, debug errors — Copilot works in any shell or terminal.</p>
+    </div>
+    <div class="copilot-card">
+      <div class="cop-icon">📊</div>
+      <h4>Copilot Metrics & Insights</h4>
+      <p>Enterprise-level dashboards — track adoption, usage, and productivity impact across all teams.</p>
+      <span class="ent-only">Enterprise only</span>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem; padding:1.5rem; background:rgba(63,185,80,0.06); border:1px solid rgba(63,185,80,0.2); border-radius:12px; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+    <div style="font-size:1.5rem;">💡</div>
+    <div><strong>Key message:</strong> <span style="color:var(--text-muted)">GitHub Teams enables Copilot Business — basic completions and chat. GitHub Enterprise unlocks the full Copilot stack: Coding Agent, GHAS Autofix, knowledge bases, and enterprise-wide governance. The AI-native future is an Enterprise capability.</span></div>
+  </div>
+</section>
+
+<!-- HACKATHON -->
+<section id="hackathon">
+  <div class="section-label">Step 1 — Developer Enablement</div>
+  <h2 class="section-title">Start with a Copilot Hackathon 🚀</h2>
+  <p class="section-sub">The fastest, most engaging way to drive Copilot adoption. A hackathon brings developers together for hands-on learning, real-world use cases, and collaborative discovery — making the transition to AI-native development dynamic and immediate.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h3>Accelerated Adoption</h3>
+      <p>Hands-on experience drives adoption faster than any traditional training format.</p>
+      <ul>
+        <li class="check">Real productivity gains felt on day 1</li>
+        <li class="check">Builds confidence to use AI in production</li>
+        <li class="check">Uses freenet's actual codebase</li>
+        <li class="check">Immediate team-wide momentum</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤝</div>
+      <h3>Collaborative Learning</h3>
+      <p>Developers learn from each other, discover use cases together, and build internal Copilot champions naturally.</p>
+      <ul>
+        <li class="check">Cross-team knowledge transfer</li>
+        <li class="check">Peer learning accelerates best practices</li>
+        <li class="check">Creates internal advocates</li>
+        <li class="check">Breaks down team silos</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <h3>Best Practices in Context</h3>
+      <p>Learn prompt engineering, workflow integration, and responsible AI use in freenet's real development environment.</p>
+      <ul>
+        <li class="check">Effective prompting techniques</li>
+        <li class="check">Copilot Chat vs completions</li>
+        <li class="check">Verifying and refining AI output</li>
+        <li class="check">Security practices with AI code</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔍</div>
+      <h3>Real-World Use Cases</h3>
+      <p>Teams tackle actual challenges from their backlog — powered by Copilot.</p>
+      <ul>
+        <li class="check">Test generation & coverage improvement</li>
+        <li class="check">Legacy code explanation & refactoring</li>
+        <li class="check">Documentation authoring at speed</li>
+        <li class="check">PR review & security scanning</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <h3>Measurable Impact</h3>
+      <p>A structured hackathon produces tangible, trackable outcomes from day one.</p>
+      <ul>
+        <li class="check">Track velocity improvement during event</li>
+        <li class="check">Document use cases discovered</li>
+        <li class="check">Baseline for Copilot ROI measurement</li>
+        <li class="check">Input for rollout strategy</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <h3>Structure of the Day</h3>
+      <p>A typical Copilot hackathon runs 1–2 days, structured for maximum learning and output.</p>
+      <ul>
+        <li class="arrow">Morning: Copilot intro, setup & best practices</li>
+        <li class="arrow">Afternoon: Team challenges on real code</li>
+        <li class="arrow">Evening: Demo & retrospective</li>
+        <li class="arrow">GitHub & partner coaches on-site</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hack-highlight">
+    <div style="font-size:2rem; margin-bottom:0.75rem;">🏆</div>
+    <h3 style="font-size:1.3rem; font-weight:800; margin-bottom:0.5rem;">Why Hackathons Work</h3>
+    <p style="color:var(--text-muted); max-width:650px; margin:0 auto;">Developers who participate in a structured Copilot hackathon are significantly more likely to integrate AI into their daily workflow — and become the internal advocates who drive adoption across the entire organisation.</p>
+    <div class="hack-stats">
+      <div class="hack-stat"><div class="num" style="background:var(--gradient-copilot);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">3x</div><div class="lbl">Faster adoption vs<br>traditional training</div></div>
+      <div class="hack-stat"><div class="num" style="background:var(--gradient-github);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">1–2</div><div class="lbl">Days to become<br>AI-native</div></div>
+      <div class="hack-stat"><div class="num" style="background:var(--gradient-partner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">100%</div><div class="lbl">Hands-on —<br>no passive slides</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCELERATOR -->
+<section id="accelerator">
+  <div class="section-label">Step 2 — Partner-Led Migration</div>
+  <h2 class="section-title">Microsoft-Funded Migration Accelerator</h2>
+  <p class="section-sub">Microsoft can fund up to €30,000 for a certified partner to migrate, enable, and upskill freenet on GitHub Enterprise — reducing cost and risk significantly.</p>
+
+  <div class="program-cards">
+    <div class="program-card accelerator">
+      <div class="prog-header">
+        <div class="prog-icon partner">🚀</div>
+        <div>
+          <h3>GitHub Migration Accelerator</h3>
+          <span class="prog-tag prog-tag-partner">Up to €30K Microsoft Funding</span>
+        </div>
+      </div>
+      <ul class="prog-items">
+        <li>Microsoft funds the engagement — delivered by certified GitHub SI partner</li>
+        <li>Full GitHub Enterprise setup, configuration & best practices</li>
+        <li>Entra ID SSO & SCIM provisioning setup</li>
+        <li>Copilot Business / Enterprise enablement & training</li>
+        <li>GHAS setup — secret scanning, CodeQL, Autofix</li>
+        <li>Developer workshops & team enablement sessions</li>
+        <li>30-day post-migration hypercare & support</li>
+      </ul>
+      <div class="prog-highlight partner-hl">💡 Best combined with the Hackathon: use Accelerator for technical setup, Hackathon for developer adoption</div>
+    </div>
+
+    <div class="program-card accelerator" style="border-color:rgba(88,166,255,0.3); background:linear-gradient(135deg,rgba(88,166,255,0.06) 0%,rgba(188,140,255,0.04) 100%);">
+      <div class="prog-header">
+        <div class="prog-icon" style="background:rgba(88,166,255,0.15);width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🤝</div>
+        <div>
+          <h3>Delivered by Eficode</h3>
+          <span class="prog-tag" style="background:rgba(188,140,255,0.15);color:var(--accent-purple);">Certified GitHub SI Partner</span>
+        </div>
+      </div>
+      <ul class="prog-items">
+        <li>Long-standing GitHub & Microsoft certified partner</li>
+        <li>Proven migration factory model — repeatable and low-risk</li>
+        <li>Specialised in GitHub Enterprise Cloud deployments</li>
+        <li>Copilot adoption workshops & change management</li>
+        <li>GHAS implementation & security enablement</li>
+        <li>Active in DACH & EMEA region</li>
+        <li>Eligible to execute Microsoft-funded accelerators</li>
+      </ul>
+      <div class="prog-highlight" style="background:rgba(88,166,255,0.1);color:#60bfff;border-left:3px solid var(--accent);">📞 Eligibility confirmed by your GitHub AE based on freenet's Microsoft relationship</div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOUD FACTORY -->
+<section id="factory">
+  <div class="section-label">Step 3 — Microsoft-Funded Delivery</div>
+  <h2 class="section-title">Microsoft Cloud Accelerate Factory</h2>
+  <p class="section-sub">A Microsoft-funded delivery program — executed by Microsoft's own Customer Success Unit (CSU) engineers — at zero cost to freenet.</p>
+
+  <div class="program-cards">
+    <div class="program-card factory">
+      <div class="prog-header">
+        <div class="prog-icon msft">🏭</div>
+        <div>
+          <h3>Cloud Accelerate Factory (CAF)</h3>
+          <span class="prog-tag prog-tag-msft">Microsoft-Funded · €0 to freenet</span>
+        </div>
+      </div>
+      <ul class="prog-items">
+        <li>Delivered by Microsoft CSU engineers — no additional cost</li>
+        <li>GitHub Enterprise Cloud setup & configuration</li>
+        <li>Identity & access management (Entra ID, SCIM, SSO)</li>
+        <li>Wave-based migration: Assess → Pilot → Scale → Train</li>
+        <li>Developer training on GitHub workflows & best practices</li>
+        <li>Post-migration Copilot adoption workshops</li>
+        <li>GHAS enablement & security posture improvement</li>
+      </ul>
+      <div class="prog-highlight msft-hl">⚠️ CAF handles technical setup & training. Pair with Hackathon for developer adoption momentum.</div>
+    </div>
+
+    <div class="program-card factory" style="border-color:rgba(63,185,80,0.3);background:linear-gradient(135deg,rgba(63,185,80,0.06) 0%,rgba(88,166,255,0.04) 100%);">
+      <div class="prog-header">
+        <div class="prog-icon" style="background:rgba(63,185,80,0.15);width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">📋</div>
+        <div>
+          <h3>CAF Delivery Phases</h3>
+          <span class="prog-tag" style="background:rgba(63,185,80,0.15);color:var(--accent-green);">5-Phase Process</span>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item"><div class="tl-badge">Phase 1</div><h4>Assessment & Planning</h4><p>Current state analysis, scoping, tooling setup, timeline definition</p></div>
+        <div class="timeline-item"><div class="tl-badge">Phase 2</div><h4>Pilot</h4><p>1–2 teams migrated and validated — low-risk proof of concept</p></div>
+        <div class="timeline-item"><div class="tl-badge">Phase 3</div><h4>Scaled Deployment</h4><p>Wave-based rollout across all teams and repositories</p></div>
+        <div class="timeline-item"><div class="tl-badge">Phase 4</div><h4>Training & Enablement</h4><p>GitHub Enterprise workflows, Copilot onboarding, GHAS training</p></div>
+        <div class="timeline-item" style="padding-bottom:0"><div class="tl-badge">Phase 5</div><h4>Sign-off & Handover</h4><p>Formal validation, documentation, post-migration support</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="partner-band">
+  <h3>Certified GitHub Migration Partners</h3>
+  <p>These partners are eligible to deliver Microsoft-funded GitHub Enterprise migration accelerators in the DACH/EMEA region.</p>
+  <div class="partner-pills">
+    <span class="partner-pill hl">⭐ Eficode (Recommended)</span>
+    <span class="partner-pill">Xebia</span>
+    <span class="partner-pill">Accenture</span>
+    <span class="partner-pill">Capgemini</span>
+    <span class="partner-pill">Avanade</span>
+    <span class="partner-pill">Microsoft CSU (CAF)</span>
+  </div>
+</div>
+
+<!-- NEXT STEPS -->
+<section id="next">
+  <div class="section-label">Get Started</div>
+  <h2 class="section-title">freenet's Recommended Journey</h2>
+  <p class="section-sub">A structured, low-risk path to GitHub Enterprise — with Microsoft-funded support at every step.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <h3>1 — Copilot Hackathon</h3>
+      <p>Start with a 1–2 day hands-on hackathon. Developers experience Copilot on real freenet code. Build internal champions. Create adoption momentum before the technical migration begins.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">✅</div>
+      <h3>2 — Funding Eligibility Check</h3>
+      <p>We confirm freenet's eligibility for the Microsoft Migration Accelerator (up to €30K via Eficode) and/or Cloud Factory (€0 via Microsoft CSU). Both can run in parallel.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏭</div>
+      <h3>3 — Enterprise Deployment</h3>
+      <p>CAF or Eficode deploys GitHub Enterprise Cloud with Entra ID SSO, SCIM, and GHAS. Pilot with 1–2 teams first, then scale across freenet.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <h3>4 — Full Copilot Enablement</h3>
+      <p>Activate Copilot Enterprise, knowledge bases, Coding Agent, and GHAS Autofix. Measure productivity impact from the first sprint. freenet is fully AI-native.</p>
+    </div>
+  </div>
+</section>
+
+<div class="cta-section">
+  <h2>Ready to unlock GitHub Enterprise for freenet AG?</h2>
+  <p>Let's discuss the Hackathon, funding options, and migration path — no cost, no obligation to explore.</p>
+  <a href="mailto:onurpiskin@microsoft.com" class="cta-btn">Contact Onur Piskin →</a>
+</div>
+
+<footer>
+  <p>GitHub Enterprise × Microsoft · freenet AG · Confidential — For customer discussion purposes only · 2026</p>
+</footer>
+
+<script>
+  const navLinks = document.querySelectorAll('nav .nav-links a');
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+    navLinks.forEach(a => { a.classList.remove('active'); if (a.getAttribute('href') === '#' + current) a.classList.add('active'); });
+  });
+</script>
+</body>
+</html>
