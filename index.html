@@ -174,7 +174,7 @@
     <li><a href="#copilot">Copilot</a></li>
     <li><a href="#hackathon">Hackathon</a></li>
     <li><a href="#accelerator">Accelerator</a></li>
-    <li><a href="#factory">CSU &amp; Cloud Factory</a></li>
+    <li><a href="#factory">CAF Migration</a></li>
     <li><a href="#teams-vs-ent">GitHub Enterprise</a></li>
     <li><a href="#next">Next Steps</a></li>
   </ul>
@@ -209,7 +209,7 @@
     <div class="journey-arrow">→</div>
     <div class="journey-step" style="border-color:var(--accent-purple)"><div class="js-num" style="background:var(--gradient-copilot);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">2</div><div class="js-label">Copilot Hackathon<br><span style="color:var(--accent-purple);font-size:0.72rem;">Drive adoption</span></div></div>
     <div class="journey-arrow">→</div>
-    <div class="journey-step" style="border-color:var(--accent-orange)"><div class="js-num" style="background:var(--gradient-partner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">3</div><div class="js-label">Cloud Factory<br><span style="color:#60bfff;font-size:0.72rem;">Microsoft CSU</span></div></div>
+    <div class="journey-step" style="border-color:var(--accent-orange)"><div class="js-num" style="background:var(--gradient-partner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">3</div><div class="js-label">CAF Migration<br><span style="color:#60bfff;font-size:0.72rem;">Microsoft CSU</span></div></div>
     <div class="journey-arrow">→</div>
     <div class="journey-step" style="border-color:#0078d4"><div class="js-num" style="background:var(--gradient-msft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">4</div><div class="js-label">Accelerator<br><span style="color:var(--accent-orange);font-size:0.72rem;">Optional</span></div></div>
     <div class="journey-arrow">→</div>
@@ -450,126 +450,67 @@
 
 <!-- CLOUD FACTORY -->
 <section id="factory">
-  <div class="section-label">Step 2 — Microsoft CSU Delivery</div>
-  <h2 class="section-title">Microsoft Customer Success Unit (CSU) &amp; Cloud Factory</h2>
-  <p class="section-sub">Microsoft's Customer Success Unit (CSU) is at the heart of freenet's adoption journey — from the opening hackathon to long-term Copilot enablement. The Cloud Accelerate Factory (CAF) is a CSU-delivered, Microsoft-funded programme at zero cost to freenet.</p>
-
-  <!-- CSU UNIFIED OFFERING BANNER -->
-  <div style="background:linear-gradient(135deg,rgba(0,120,212,0.12) 0%,rgba(0,180,216,0.06) 100%);border:1px solid rgba(0,120,212,0.4);border-radius:14px;padding:2rem;margin-bottom:2.5rem;">
-    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap;">
-      <div style="font-size:2rem;">🏢</div>
-      <div>
-        <h3 style="font-size:1.15rem;font-weight:800;">The Unified Offering: GitHub + Microsoft CSU</h3>
-        <p style="color:#60bfff;font-size:0.82rem;font-weight:600;">One coordinated team. Zero cost for CSU-delivered activities.</p>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;">
-      <div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:1rem;">
-        <div style="font-size:1.3rem;margin-bottom:0.4rem;">🎯</div>
-        <h4 style="font-size:0.9rem;font-weight:700;margin-bottom:0.3rem;">Hackathon Co-Delivery</h4>
-        <p style="font-size:0.82rem;color:var(--text-muted);">CSU engineers co-facilitate the Copilot hackathon alongside GitHub for maximum developer impact.</p>
-      </div>
-      <div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:1rem;">
-        <div style="font-size:1.3rem;margin-bottom:0.4rem;">🏭</div>
-        <h4 style="font-size:0.9rem;font-weight:700;margin-bottom:0.3rem;">Cloud Factory Execution</h4>
-        <p style="font-size:0.82rem;color:var(--text-muted);">CSU engineers deliver the full CAF programme — setup, migration, training, and sign-off.</p>
-      </div>
-      <div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:1rem;">
-        <div style="font-size:1.3rem;margin-bottom:0.4rem;">📚</div>
-        <h4 style="font-size:0.9rem;font-weight:700;margin-bottom:0.3rem;">Copilot Enablement</h4>
-        <p style="font-size:0.82rem;color:var(--text-muted);">Structured Copilot onboarding, best practice workshops, and adoption tracking across all teams.</p>
-      </div>
-      <div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:1rem;">
-        <div style="font-size:1.3rem;margin-bottom:0.4rem;">📊</div>
-        <h4 style="font-size:0.9rem;font-weight:700;margin-bottom:0.3rem;">Ongoing Success</h4>
-        <p style="font-size:0.82rem;color:var(--text-muted);">CSU tracks adoption metrics, provides post-migration support, and ensures long-term value realisation.</p>
-      </div>
-    </div>
-  </div>
+  <div class="section-label">Step 2 — Microsoft CAF</div>
+  <h2 class="section-title">Cloud Accelerate Factory (CAF)</h2>
+  <p class="section-sub">The Cloud Accelerate Factory (CAF) is a Microsoft-funded programme delivered by Microsoft CSU engineers at <strong>€0 cost to freenet</strong>. CAF focuses exclusively on <strong>repository migrations</strong> — assessing, piloting, and moving freenet's repositories to GitHub Enterprise Cloud in structured waves.</p>
 
   <div class="program-cards">
     <div class="program-card factory">
       <div class="prog-header">
         <div class="prog-icon msft">🏭</div>
         <div>
-          <h3>Cloud Accelerate Factory (CAF)</h3>
+          <h3>What CAF covers</h3>
           <span class="prog-tag prog-tag-msft">Microsoft-Funded · €0 to freenet</span>
         </div>
       </div>
       <ul class="prog-items">
         <li>Delivered by Microsoft CSU engineers — no additional cost</li>
-        <li>GitHub Enterprise Cloud setup & configuration</li>
-        <li>Identity & access management (Entra ID, SCIM, SSO)</li>
-        <li>Wave-based migration: Assess → Pilot → Scale → Train</li>
-        <li>Developer training on GitHub workflows & best practices</li>
-        <li>Post-migration Copilot adoption workshops</li>
-        <li>GHAS enablement & security posture improvement</li>
+        <li>Repository inventory, assessment &amp; migration scoping</li>
+        <li>Wave-based repository migration: Assess → Pilot → Scale</li>
+        <li>Source code &amp; history migration to GitHub Enterprise Cloud</li>
+        <li>Post-migration validation &amp; sign-off</li>
       </ul>
-      <div class="prog-highlight msft-hl">⚠️ CAF handles technical setup & training. Pair with Hackathon for developer adoption momentum.</div>
+      <div class="prog-highlight msft-hl">⚠️ CAF covers repository migrations only. GitHub Enterprise setup, SSO/SCIM configuration, and developer training are handled separately.</div>
     </div>
 
     <div class="program-card factory" style="border-color:rgba(63,185,80,0.3);background:linear-gradient(135deg,rgba(63,185,80,0.06) 0%,rgba(88,166,255,0.04) 100%);">
       <div class="prog-header">
         <div class="prog-icon" style="background:rgba(63,185,80,0.15);width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">📋</div>
         <div>
-          <h3>CAF Delivery Phases</h3>
-          <span class="prog-tag" style="background:rgba(63,185,80,0.15);color:var(--accent-green);">5-Phase Process</span>
+          <h3>CAF Migration Phases</h3>
+          <span class="prog-tag" style="background:rgba(63,185,80,0.15);color:var(--accent-green);">4-Phase Process</span>
         </div>
       </div>
       <div class="timeline">
-        <div class="timeline-item"><div class="tl-badge">Phase 1</div><h4>Assessment & Planning</h4><p>Current state analysis, scoping, tooling setup, timeline definition</p></div>
-        <div class="timeline-item"><div class="tl-badge">Phase 2</div><h4>Pilot</h4><p>1–2 teams migrated and validated — low-risk proof of concept</p></div>
-        <div class="timeline-item"><div class="tl-badge">Phase 3</div><h4>Scaled Deployment</h4><p>Wave-based rollout across all teams and repositories</p></div>
-        <div class="timeline-item"><div class="tl-badge">Phase 4</div><h4>Training & Enablement</h4><p>GitHub Enterprise workflows, Copilot onboarding, GHAS training</p></div>
-        <div class="timeline-item" style="padding-bottom:0"><div class="tl-badge">Phase 5</div><h4>Sign-off & Handover</h4><p>Formal validation, documentation, post-migration support</p></div>
+        <div class="timeline-item"><div class="tl-badge">Phase 1</div><h4>Assessment &amp; Planning</h4><p>Repository inventory, migration scoping, tooling setup, timeline</p></div>
+        <div class="timeline-item"><div class="tl-badge">Phase 2</div><h4>Pilot</h4><p>1–2 repositories migrated and validated — low-risk proof of concept</p></div>
+        <div class="timeline-item"><div class="tl-badge">Phase 3</div><h4>Scaled Migration</h4><p>Wave-based rollout of all repositories to GitHub Enterprise Cloud</p></div>
+        <div class="timeline-item" style="padding-bottom:0"><div class="tl-badge">Phase 4</div><h4>Validation &amp; Sign-off</h4><p>Formal sign-off, documentation, and post-migration support</p></div>
       </div>
     </div>
   </div>
 </section><!-- ACCELERATOR -->
 <section id="accelerator">
-  <div class="section-label">Step 3 — Optional Partner-Led Migration</div>
+  <div class="section-label">Step 3 — Optional Partner-Led Accelerator</div>
   <h2 class="section-title">Optional: Microsoft-Funded Migration Accelerator</h2>
-  <p class="section-sub">Optionally, Microsoft can fund up to €30,000 for a certified partner (e.g. Eficode) to deliver a more hands-on, project-managed migration — ideal if freenet needs additional capacity or a dedicated partner alongside the CSU engagement.</p>
+  <p class="section-sub">If freenet needs additional partner capacity alongside the CAF programme, Microsoft can fund up to <strong>€30,000</strong> for a certified GitHub SI partner (e.g. Eficode) to deliver a dedicated, project-managed migration engagement.</p>
 
-  <div class="program-cards">
+  <div class="program-cards" style="grid-template-columns:1fr;">
     <div class="program-card accelerator">
       <div class="prog-header">
         <div class="prog-icon partner">🚀</div>
         <div>
           <h3>GitHub Migration Accelerator</h3>
-          <span class="prog-tag prog-tag-partner">Up to €30K Microsoft Funding</span>
+          <span class="prog-tag prog-tag-partner">Up to €30K Microsoft Funding · Optional</span>
         </div>
       </div>
       <ul class="prog-items">
-        <li>Microsoft funds the engagement — delivered by certified GitHub SI partner</li>
-        <li>Full GitHub Enterprise setup, configuration & best practices</li>
-        <li>Entra ID SSO & SCIM provisioning setup</li>
-        <li>Copilot Business / Enterprise enablement & training</li>
-        <li>GHAS setup — secret scanning, CodeQL, Autofix</li>
-        <li>Developer workshops & team enablement sessions</li>
-        <li>30-day post-migration hypercare & support</li>
+        <li>Microsoft funds the engagement — delivered by a certified GitHub SI partner (e.g. Eficode)</li>
+        <li>Dedicated project management and hands-on migration delivery</li>
+        <li>Repository migration, GitHub Enterprise setup &amp; configuration</li>
+        <li>30-day post-migration hypercare &amp; support</li>
       </ul>
-      <div class="prog-highlight partner-hl">💡 Optional add-on: combine with CSU Cloud Factory for maximum coverage, or use standalone if dedicated partner capacity is needed</div>
-    </div>
-
-    <div class="program-card accelerator" style="border-color:rgba(88,166,255,0.3); background:linear-gradient(135deg,rgba(88,166,255,0.06) 0%,rgba(188,140,255,0.04) 100%);">
-      <div class="prog-header">
-        <div class="prog-icon" style="background:rgba(88,166,255,0.15);width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🤝</div>
-        <div>
-          <h3>Delivered by Eficode</h3>
-          <span class="prog-tag" style="background:rgba(188,140,255,0.15);color:var(--accent-purple);">Certified GitHub SI Partner</span>
-        </div>
-      </div>
-      <ul class="prog-items">
-        <li>Long-standing GitHub & Microsoft certified partner</li>
-        <li>Proven migration factory model — repeatable and low-risk</li>
-        <li>Specialised in GitHub Enterprise Cloud deployments</li>
-        <li>Copilot adoption workshops & change management</li>
-        <li>GHAS implementation & security enablement</li>
-        <li>Active in DACH & EMEA region</li>
-        <li>Eligible to execute Microsoft-funded accelerators</li>
-      </ul>
-      <div class="prog-highlight" style="background:rgba(88,166,255,0.1);color:#60bfff;border-left:3px solid var(--accent);">📞 Eligibility confirmed by your GitHub AE based on freenet's Microsoft relationship</div>
+      <div class="prog-highlight partner-hl">💡 Optional add-on — use standalone or combine with CAF for additional partner capacity. Eligibility confirmed by your GitHub AE.</div>
     </div>
   </div>
 </section>
@@ -674,13 +615,13 @@
     </div>
     <div class="card">
       <div class="card-icon">✅</div>
-      <h3>2 — Cloud Factory &amp; CSU Onboarding</h3>
-      <p>Microsoft CSU delivers the Cloud Accelerate Factory (CAF) programme — GitHub Enterprise setup, Entra ID SSO, SCIM, and Copilot enablement workshops. €0 cost to freenet.</p>
+      <h3>2 — CAF Repository Migration</h3>
+      <p>Microsoft CAF (Cloud Accelerate Factory) — a Microsoft-funded, CSU-delivered programme covering repository migrations to GitHub Enterprise Cloud. €0 cost to freenet.</p>
     </div>
     <div class="card">
       <div class="card-icon">🏭</div>
       <h3>3 — Accelerator (Optional)</h3>
-      <p>If additional partner capacity is needed, activate the Microsoft-funded Migration Accelerator (up to €30K via Eficode) for dedicated project management and hands-on delivery.</p>
+      <p>Optional Microsoft-funded Migration Accelerator (up to €30K via a certified partner like Eficode) for additional dedicated partner capacity alongside or after CAF.</p>
     </div>
     <div class="card">
       <div class="card-icon">🤖</div>
