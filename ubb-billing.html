@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GitHub Copilot UBB Billing — Simply Explained</title>
+<title>GitHub Copilot UBB Billing — TK Elevator</title>
 <style>
   :root {
     --bg: #0d1117;
@@ -153,7 +153,7 @@
 <body>
 
 <nav>
-  <div class="logo">⬡ GitHub Copilot · Usage-Based Billing</div>
+  <div class="logo">⬡ TK Elevator · Copilot UBB Billing</div>
   <ul class="nav-links">
     <li><a href="#whats-new">What's New</a></li>
     <li><a href="#basics">Basics</a></li>
@@ -168,9 +168,9 @@
 <!-- HERO -->
 <div class="hero">
   <div class="hero-content">
-    <div class="hero-badge">✅ LIVE since June 1, 2026 — Usage-Based Billing is now active for all Copilot plans</div>
-    <h1><span class="grad-c">GitHub Copilot</span><br>Usage-Based Billing,<br><span class="grad-g">simply explained</span></h1>
-    <p class="subtitle">One shared credit pool. Pay-as-you-go beyond it. Four guards to stay in control — plus full visibility into who is using how much. This page explains how UBB works on GitHub Enterprise Cloud and exactly how to adjust cost centers, budgets, user segmentation and usage reporting.</p>
+    <div class="hero-badge">✅ Prepared for TK Elevator · UBB is LIVE since June 1, 2026</div>
+    <h1><span class="grad-c">GitHub Copilot</span><br>Usage-Based Billing,<br><span class="grad-g">explained for TK Elevator</span></h1>
+    <p class="subtitle">One shared credit pool. Pay-as-you-go beyond it. Four guards to stay in control — plus full visibility into who is using how much. This page explains how GitHub Copilot UBB works on Enterprise Cloud and exactly how TK Elevator should adjust cost centers, budgets, user segmentation and usage reporting.</p>
     <div class="hero-cta">
       <a href="#basics" class="btn btn-primary">Understand UBB in 5 minutes</a>
       <a href="#adjust" class="btn btn-secondary">Jump to settings</a>
@@ -260,7 +260,7 @@
         <h4>How much per seat?</h4>
         <p><strong>Copilot Business:</strong> $19/seat → 1,900 AIC into the pool</p>
         <p><strong>Copilot Enterprise:</strong> $39/seat → 3,900 AIC into the pool</p>
-        <p style="margin-top: 0.75rem;"><em>Example: 1,000 users on Enterprise = 3,900,000 AIC ($39,000) included every month.</em></p>
+        <p style="margin-top: 0.75rem;"><em>Example: 1,000 TK Elevator users on Enterprise = 3,900,000 AIC ($39,000) included every month.</em></p>
       </div>
     </div>
   </div>
@@ -345,7 +345,7 @@
       <div class="guard-num">GUARD #4 · PROTECTS YOUR WALLET</div>
       <h4>Cost-center budget</h4>
       <div class="guard-purpose">Caps additional spend per business unit</div>
-      <p>Group users, repos or orgs into cost centers (e.g. per business unit, brand, product team or department) and cap each one. Enables chargeback, blocks one BU from burning the whole overage. <strong>Up to 500 cost centers per enterprise.</strong></p>
+    <p>Group users, repos or orgs into cost centers (e.g. per TK Elevator business segment, region or product team) and cap each one. Enables chargeback, blocks one segment from burning the whole overage. <strong>Up to 500 cost centers per enterprise.</strong></p>
       <div class="how"><strong>How:</strong> Billing → Cost centers → Create → assign users/repos/orgs → then Budgets → Create budget scoped to that cost center.</div>
     </div>
   </div>
@@ -571,26 +571,26 @@
   <p class="section-sub">Most enterprises don't need flat ULBs. Segment your users by role, give each segment its own budget envelope and use cost centers to map to chargeback business units.</p>
 
   <div class="segment">
-    <h3>Recommended segmentation pattern</h3>
-    <p style="color: var(--text-muted); font-size: 0.92rem;">Combine <strong>ULBs</strong> (per-user cap) with <strong>cost centers</strong> (per-team chargeback) for the strongest control.</p>
+    <h3>Recommended TK Elevator segmentation pattern</h3>
+    <p style="color: var(--text-muted); font-size: 0.92rem;">Combine <strong>ULBs</strong> (per-user cap) with <strong>cost centers</strong> (per-business-unit chargeback) for the strongest control.</p>
 
     <div class="segment-grid">
       <div class="seg-card">
         <div class="seg-emoji">🌱</div>
         <h5>Light users</h5>
-        <p>Occasional Chat users, mostly inline completions. Bulk of your seats.</p>
+        <p>Occasional Chat users, mostly inline completions. Business analysts, IT support, citizen devs.</p>
         <span class="seg-budget">ULB: ~$10 / mo</span>
       </div>
       <div class="seg-card">
         <div class="seg-emoji">👩‍💻</div>
         <h5>Standard developers</h5>
-        <p>Daily Chat + occasional agent mode. The default tier.</p>
+        <p>Daily Chat + occasional agent mode. Field-service app, web, ERP, modernization teams.</p>
         <span class="seg-budget">ULB: ~$30 / mo</span>
       </div>
       <div class="seg-card">
         <div class="seg-emoji">🚀</div>
         <h5>Power / platform engineers</h5>
-        <p>Heavy agent use, CCR, CLI, Spaces. Drive most of the value.</p>
+        <p>Heavy agent use, CCR, CLI, Spaces. Digital Products (MAX), cloud platform, data engineering.</p>
         <span class="seg-budget">ULB: ~$80 / mo</span>
       </div>
       <div class="seg-card">
@@ -602,7 +602,7 @@
     </div>
 
     <div style="margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--bg-card); border-radius: 8px; border-left: 3px solid var(--accent-purple);">
-      <strong style="color: var(--accent-purple);">💡 Recommended pattern:</strong> <span style="color: var(--text-muted); font-size: 0.9rem;">Create one cost center per legal entity, brand or business unit. Assign all related orgs into them. Set both a cost-center budget AND user-level budgets. Use the <a href="https://gh.io/budget-api-docs" target="_blank" style="color: var(--accent);">Budget API</a> to roll out ULBs in bulk based on your identity provider groups (AAD, Okta, etc.).</span>
+      <strong style="color: var(--accent-purple);">💡 TK Elevator recommendation:</strong> <span style="color: var(--text-muted); font-size: 0.9rem;">Create one cost center per business segment or region (e.g. <em>Digital Products / MAX</em>, <em>Field Service IT</em>, <em>Modernization</em>, <em>Manufacturing IT</em>, <em>EMEA / AMER / APAC</em>). Assign all related GitHub orgs into them, set both a cost-center budget AND ULBs. Use the <a href="https://gh.io/budget-api-docs" target="_blank" style="color: var(--accent);">Budget API</a> to roll out ULBs in bulk based on Entra ID / Active Directory groups.</span>
     </div>
   </div>
 </section>
@@ -625,7 +625,7 @@
     <div class="path">enterprise / your-enterprise / settings / billing / cost-centers</div>
     <ol>
       <li>Click <strong>Cost centers</strong> → <strong>New cost center</strong></li>
-      <li>Name it after the business unit (e.g. <em>Marketing Web Platform</em>, <em>Mobile Apps</em>, <em>R&D</em>)</li>
+      <li>Name it after the business unit (e.g. <em>Digital Products – MAX</em>, <em>Field Service IT EMEA</em>, <em>Modernization R&D</em>)</li>
       <li>Add resources — pick <strong>users</strong>, <strong>repositories</strong> and/or <strong>organizations</strong></li>
       <li>Save. From now on all UBB usage of those resources is attributed to this cost center</li>
       <li>(Optional) Attach a budget — see "Cost-center budget" below</li>
@@ -666,7 +666,7 @@
     <ol>
       <li>Create the cost center first (see above)</li>
       <li>Click <strong>New budget</strong> → scope <strong>Cost center</strong> → pick it</li>
-      <li>Set USD cap for additional spend (e.g. $2,000 / month per business unit)</li>
+      <li>Set USD cap for additional spend (e.g. $2,000 / month per TKE segment)</li>
       <li>Choose product = Copilot, Actions, Packages, etc. — or "All products"</li>
       <li><strong>Turn ON</strong> "Stop usage when budget exceeded"</li>
       <li>Add notification thresholds and recipients (cost-center owner + finance)</li>
@@ -775,24 +775,24 @@
 
 <!-- CHECKLIST -->
 <section id="checklist">
-  <div class="section-label">✅ Rollout checklist</div>
+  <div class="section-label">✅ TK Elevator rollout checklist</div>
   <h2 class="section-title">Six-step rollout for production</h2>
 
   <div class="checklist">
-    <h3>UBB setup checklist</h3>
+    <h3>UBB setup checklist for TK Elevator</h3>
     <ol>
-      <li><strong>Map cost centers to brands / business units</strong><span>Create one cost center per legal entity, brand or major team. Assign all GitHub orgs into them. Up to 500 supported per enterprise.</span></li>
-      <li><strong>Set a default ULB for "standard developer"</strong><span>~$30 / month covers daily Chat + occasional agent usage. Apply to all users via the API.</span></li>
-      <li><strong>Override ULB for power users</strong><span>Identify the top ~5% by AIC consumption (Usage metrics API → <code>ai_credits_used</code>) and bump them to ~$80.</span></li>
-      <li><strong>Set per-cost-center budgets</strong><span>Each BU gets its own additional-spend cap. Use the "exclude cost-center usage" enterprise option so BUs are independent.</span></li>
-      <li><strong>Set the enterprise master cap</strong><span>One final ceiling for everything else. Ask your GitHub account team to baseline first.</span></li>
-      <li><strong>Turn ON "Stop usage" on every budget · review monthly</strong><span>If users are blocked → raise budget. If jar lasts the whole month → tighten or expand seats. Use Usage summary API for chargeback reporting.</span></li>
+      <li><strong>Map cost centers to TKE business segments & regions</strong><span>Create one cost center per segment (Digital Products / Field Service / Modernization / Manufacturing IT) and per region (EMEA / AMER / APAC) as needed. Assign all GitHub orgs into them. Up to 500 supported per enterprise.</span></li>
+      <li><strong>Set a default ULB for "standard developer"</strong><span>~$30 / month covers daily Chat + occasional agent usage. Apply to all TKE users via the API.</span></li>
+      <li><strong>Override ULB for power users</strong><span>Identify the top ~5% by AIC consumption (Usage metrics API → <code>ai_credits_used</code>) — typically MAX platform engineers and cloud architects — and bump them to ~$80.</span></li>
+      <li><strong>Set per-cost-center budgets</strong><span>Each TKE segment gets its own additional-spend cap. Use the "exclude cost-center usage" enterprise option so segments are independent.</span></li>
+      <li><strong>Set the TK Elevator enterprise master cap</strong><span>One final ceiling for everything else. Ask your GitHub account team to baseline TKE's current consumption first.</span></li>
+      <li><strong>Turn ON "Stop usage" on every budget · review monthly</strong><span>If users are blocked → raise budget. If the credit jar lasts the whole month → tighten or expand seats. Use Usage summary API to feed chargeback reports back to each TKE segment.</span></li>
     </ol>
   </div>
 </section>
 
 <footer>
-  <p>GitHub Copilot UBB explainer · Updated June 25, 2026</p>
+  <p>Prepared for TK Elevator · GitHub Copilot UBB explainer · Updated June 25, 2026</p>
   <p style="margin-top: 0.5rem;">Sources: <a href="https://github.blog/changelog" target="_blank">GitHub Changelog</a> · <a href="https://docs.github.com/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises" target="_blank">Copilot UBB docs</a> · <a href="https://docs.github.com/billing/tutorials/set-up-budgets" target="_blank">Budgets docs</a> · <a href="https://docs.github.com/copilot/how-tos/administer-copilot/manage-for-organization/monitor-organization-usage" target="_blank">Copilot metrics docs</a></p>
   <p style="margin-top: 0.5rem; font-size: 0.75rem;">Always verify settings against official GitHub documentation before making changes.</p>
 </footer>
