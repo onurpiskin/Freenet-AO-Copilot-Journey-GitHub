@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Copilot UBB Billing — Simply Explained · freenet AG</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-card: #161b22;
+    --bg-card-hover: #1c2129;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-green: #3fb950;
+    --accent-purple: #bc8cff;
+    --accent-orange: #d29922;
+    --accent-red: #f85149;
+    --gradient-github: linear-gradient(135deg, #58a6ff 0%, #3fb950 100%);
+    --gradient-copilot: linear-gradient(135deg, #bc8cff 0%, #58a6ff 100%);
+    --gradient-enterprise: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+    --gradient-warning: linear-gradient(135deg, #d29922 0%, #f85149 100%);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(13,17,23,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  nav .logo { font-weight: 700; font-size: 1.05rem; background: var(--gradient-github); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  nav .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  nav .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+  nav .nav-links a:hover, nav .nav-links a.active { color: var(--accent); }
+  @media(max-width:768px){ nav .nav-links { display: none; } }
+
+  /* HERO */
+  .hero { min-height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 4rem; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 30%, rgba(88,166,255,0.12) 0%, transparent 55%), radial-gradient(ellipse at 70% 60%, rgba(188,140,255,0.10) 0%, transparent 50%); }
+  .hero-content { position: relative; max-width: 950px; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 1rem; border-radius: 100px; border: 1px solid var(--border); color: var(--accent-green); font-size: 0.8rem; margin-bottom: 1.5rem; letter-spacing: 0.5px; background: rgba(63,185,80,0.08); }
+  .hero h1 { font-size: clamp(2.2rem, 5.5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+  .hero h1 .grad-c { background: var(--gradient-copilot); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero h1 .grad-g { background: var(--gradient-github); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .subtitle { font-size: 1.15rem; color: var(--text-muted); max-width: 720px; margin: 0 auto 2rem; }
+  .hero-cta { display: inline-flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .btn { display: inline-block; padding: 0.75rem 1.75rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: all 0.2s; }
+  .btn-primary { background: var(--gradient-github); color: #000; }
+  .btn-secondary { border: 1px solid var(--border); color: var(--text); background: var(--bg-card); }
+  .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* SECTIONS */
+  section { padding: 4rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .section-title { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; line-height: 1.2; margin-bottom: 1rem; }
+  .section-sub { color: var(--text-muted); font-size: 1.05rem; max-width: 720px; margin-bottom: 2.5rem; }
+
+  /* WHATS NEW */
+  .whats-new { background: linear-gradient(135deg, rgba(63,185,80,0.06) 0%, rgba(88,166,255,0.04) 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .whats-new-inner { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+  .new-pill { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 100px; background: var(--accent-green); color: #000; font-size: 0.7rem; font-weight: 700; margin-right: 0.5rem; letter-spacing: 0.5px; }
+  .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .news-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
+  .news-card .news-date { font-size: 0.72rem; color: var(--accent-green); font-weight: 700; letter-spacing: 0.5px; }
+  .news-card h4 { font-size: 0.95rem; font-weight: 700; margin-top: 0.35rem; margin-bottom: 0.4rem; }
+  .news-card p { font-size: 0.84rem; color: var(--text-muted); }
+  .news-card a { color: var(--accent); text-decoration: none; font-size: 0.78rem; }
+  .news-card a:hover { text-decoration: underline; }
+
+  /* STEPS */
+  .step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 2rem; margin-bottom: 1.5rem; position: relative; }
+  .step-num { position: absolute; top: -16px; left: 24px; width: 36px; height: 36px; border-radius: 50%; background: var(--gradient-github); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; }
+  .step h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; margin-top: 0.5rem; }
+  .step .step-tag { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+  .step-body { color: var(--text-muted); font-size: 0.95rem; }
+  .step-body strong { color: var(--text); }
+
+  /* JAR VISUAL */
+  .jar-viz { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; margin-top: 1.5rem; }
+  .jar { width: 140px; height: 160px; border: 3px solid var(--accent); border-top: none; border-radius: 0 0 30px 30px; position: relative; background: linear-gradient(to top, rgba(63,185,80,0.3) 0%, rgba(63,185,80,0.3) 70%, transparent 70%, transparent 100%); flex-shrink: 0; }
+  .jar::before { content: 'AIC'; position: absolute; top: -28px; left: 50%; transform: translateX(-50%); background: var(--bg-card); padding: 0.2rem 0.8rem; border: 2px solid var(--accent); border-radius: 6px; font-weight: 700; font-size: 0.85rem; color: var(--accent); }
+  .jar-coins { font-size: 1.5rem; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); }
+  .jar-info { flex: 1; min-width: 240px; }
+  .jar-info h4 { font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent-green); }
+  .jar-info p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+  /* FEATURES TABLE */
+  .feat-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1.5rem; }
+  @media(max-width:700px){ .feat-split { grid-template-columns: 1fr; } }
+  .feat-col { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+  .feat-col.paid { border-color: var(--accent-red); }
+  .feat-col.free { border-color: var(--accent-green); }
+  .feat-col h4 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+  .feat-col.paid h4 { color: var(--accent-red); }
+  .feat-col.free h4 { color: var(--accent-green); }
+  .feat-col ul { list-style: none; }
+  .feat-col li { padding: 0.4rem 0; color: var(--text-muted); font-size: 0.9rem; border-bottom: 1px solid var(--border); }
+  .feat-col li:last-child { border-bottom: none; }
+
+  /* GUARDS */
+  .guard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+  .guard { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; position: relative; transition: all 0.2s; }
+  .guard:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .guard-shield { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; opacity: 0.5; }
+  .guard-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; color: var(--accent); margin-bottom: 0.5rem; }
+  .guard h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .guard .guard-purpose { font-size: 0.8rem; color: var(--accent-purple); margin-bottom: 0.75rem; }
+  .guard p { color: var(--text-muted); font-size: 0.88rem; }
+  .guard .how { margin-top: 0.75rem; padding: 0.6rem 0.8rem; background: var(--bg); border-radius: 6px; border-left: 3px solid var(--accent); font-size: 0.82rem; }
+  .guard .how strong { color: var(--accent); }
+
+  /* SEGMENTATION (customer ask) */
+  .segment { background: linear-gradient(135deg, rgba(188,140,255,0.08) 0%, rgba(88,166,255,0.05) 100%); border: 1px solid rgba(188,140,255,0.3); border-radius: 14px; padding: 2rem; margin-top: 1.5rem; }
+  .segment h3 { font-size: 1.2rem; margin-bottom: 0.75rem; background: var(--gradient-copilot); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; }
+  .segment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; }
+  .seg-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
+  .seg-card .seg-emoji { font-size: 1.6rem; margin-bottom: 0.5rem; }
+  .seg-card h5 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .seg-card p { font-size: 0.82rem; color: var(--text-muted); }
+  .seg-card .seg-budget { display: inline-block; margin-top: 0.5rem; padding: 0.15rem 0.55rem; border-radius: 100px; background: rgba(63,185,80,0.15); color: var(--accent-green); font-size: 0.7rem; font-weight: 700; }
+
+  /* HOW TO ADJUST */
+  .adjust-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; margin-bottom: 1.25rem; }
+  .adjust-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+  .adjust-head .ah-icon { font-size: 1.5rem; }
+  .adjust-head h4 { font-size: 1.15rem; font-weight: 700; flex: 1; }
+  .adjust-card .where { font-size: 0.8rem; color: var(--accent); margin-bottom: 0.75rem; }
+  .adjust-card .desc { color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1rem; }
+  .adjust-card .path { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.6rem 0.9rem; font-family: 'SF Mono', Menlo, monospace; font-size: 0.82rem; color: var(--accent); margin-bottom: 0.75rem; overflow-x: auto; }
+  .adjust-card ol { margin-left: 1.25rem; color: var(--text-muted); font-size: 0.88rem; }
+  .adjust-card ol li { padding: 0.25rem 0; }
+  .adjust-card .tip { margin-top: 0.75rem; padding: 0.7rem 0.9rem; background: rgba(88,166,255,0.08); border-left: 3px solid var(--accent); border-radius: 4px; font-size: 0.85rem; color: var(--text); }
+
+  /* WARNING */
+  .warn { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.3); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
+  .warn h4 { color: var(--accent-red); margin-bottom: 0.5rem; }
+  .warn p { color: var(--text); font-size: 0.9rem; }
+
+  /* CHECKLIST */
+  .checklist { background: var(--bg-card); border: 1px solid var(--accent-green); border-radius: 14px; padding: 2rem; margin-top: 1.5rem; }
+  .checklist h3 { margin-bottom: 1rem; color: var(--accent-green); }
+  .checklist ol { list-style: none; counter-reset: cl; }
+  .checklist li { counter-increment: cl; padding: 0.6rem 0 0.6rem 2.5rem; position: relative; border-bottom: 1px solid var(--border); }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before { content: counter(cl); position: absolute; left: 0; top: 0.6rem; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-green); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+  .checklist li strong { color: var(--text); }
+  .checklist li span { color: var(--text-muted); font-size: 0.88rem; display: block; margin-top: 0.2rem; }
+
+  footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.82rem; margin-top: 3rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">⬡ Copilot UBB Billing · freenet AG</div>
+  <ul class="nav-links">
+    <li><a href="index.html">← Home</a></li>
+    <li><a href="#whats-new">What's New</a></li>
+    <li><a href="#basics">Basics</a></li>
+    <li><a href="#guards">Controls</a></li>
+    <li><a href="#segmentation">Segmentation</a></li>
+    <li><a href="#adjust">How to Adjust</a></li>
+    <li><a href="#checklist">Setup</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">✅ LIVE since June 1, 2026 — Usage-Based Billing is now active for all Copilot plans</div>
+    <h1><span class="grad-c">GitHub Copilot</span><br>Usage-Based Billing,<br><span class="grad-g">simply explained</span></h1>
+    <p class="subtitle">One shared credit pool. Pay-as-you-go beyond it. Four guards to stay in control. This page explains how UBB works on GitHub Enterprise Cloud — and exactly how to adjust cost centers, budgets and user segmentation for freenet AG.</p>
+    <div class="hero-cta">
+      <a href="#basics" class="btn btn-primary">Understand UBB in 5 minutes</a>
+      <a href="#adjust" class="btn btn-secondary">Jump to settings</a>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT'S NEW (from changelog research) -->
+<div class="whats-new" id="whats-new">
+  <div class="whats-new-inner">
+    <div class="section-label">📰 Updates since Q1 2026</div>
+    <h2 class="section-title" style="font-size: 1.8rem;">What changed recently <span class="new-pill">NEW</span></h2>
+    <p class="section-sub">These updates from the GitHub Changelog go beyond the original animated explainer — make sure your setup reflects them.</p>
+
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="news-date">JUNE 1, 2026</div>
+        <h4>UBB is live for all plans</h4>
+        <p>Every Copilot plan now bills based on AI Credits consumed. Included usage + optional additional spend with budgets.</p>
+        <a href="https://github.blog/changelog/2026-06-01-updates-to-github-copilot-billing-and-plans" target="_blank">Read changelog →</a>
+      </div>
+      <div class="news-card">
+        <div class="news-date">JUNE 1, 2026</div>
+        <h4>User-Level Budgets (ULB) — GA</h4>
+        <p>Set a universal budget for all users or override for specific groups. For AI credits, ULBs control <strong>total</strong> usage, not just overage.</p>
+        <a href="https://docs.github.com/copilot/concepts/billing/budgets-for-usage-based-billing#user-level-budget" target="_blank">Docs →</a>
+      </div>
+      <div class="news-card">
+        <div class="news-date">JUNE 10, 2026</div>
+        <h4>500 cost centers per enterprise</h4>
+        <p>Doubled from 250 → 500. Map cost centers much closer to your real business-unit structure.</p>
+        <a href="https://github.blog/changelog/2026-06-10-enterprises-can-now-create-up-to-500-cost-centers" target="_blank">Read changelog →</a>
+      </div>
+      <div class="news-card">
+        <div class="news-date">JUNE 4, 2026</div>
+        <h4>Budget & Usage APIs — GA</h4>
+        <p>Programmatically create/update/delete budgets and pull usage by org, repo, cost center, product or SKU. Ideal for bulk ULB rollout.</p>
+        <a href="https://gh.io/budget-api-docs" target="_blank">API docs →</a>
+      </div>
+      <div class="news-card">
+        <div class="news-date">JUNE 19, 2026</div>
+        <h4>AI credits per user in metrics API</h4>
+        <p>New <code>ai_credits_used</code> field per user in the Copilot usage metrics API — connect consumption to value.</p>
+        <a href="https://github.blog/changelog/2026-06-19-ai-credits-consumed-per-user-now-in-the-copilot-usage-metrics-api" target="_blank">Read changelog →</a>
+      </div>
+      <div class="news-card">
+        <div class="news-date">JUNE 1, 2026</div>
+        <h4>Copilot code review now uses Actions minutes</h4>
+        <p>CCR consumes GitHub Actions minutes <em>in addition to</em> AI Credits. Configure a default org-level runner.</p>
+        <a href="https://docs.github.com/copilot/how-tos/copilot-on-github/set-up-copilot/configure-runners#configure-runners-at-the-organization-level" target="_blank">Docs →</a>
+      </div>
+      <div class="news-card">
+        <div class="news-date">JAN 19, 2026 · preview</div>
+        <h4>Enterprise budgets that <em>exclude</em> cost center usage</h4>
+        <p>Set a default enterprise cap, then selectively grant additional usage via specific cost centers. Solves the "ringfencing" gap.</p>
+        <a href="https://github.blog/changelog/2026-01-19-enterprise-scoped-budgets-that-exclude-cost-center-usage-in-public-preview" target="_blank">Read changelog →</a>
+      </div>
+      <div class="news-card">
+        <div class="news-date">JUNE 11, 2026</div>
+        <h4>Agentic workflows can bill to the org</h4>
+        <p>Workflows using <code>GITHUB_TOKEN</code> + <code>copilot-requests: write</code> bill the org directly — <strong>bypassing ULBs</strong>. Use cost-center budgets instead.</p>
+        <a href="https://github.blog/changelog/2026-06-11-agentic-workflows-no-longer-need-a-personal-access-token" target="_blank">Read changelog →</a>
+      </div>
+      <div class="news-card">
+        <div class="news-date">MARCH 16, 2026</div>
+        <h4>Cost center on People page deprecated</h4>
+        <p>Manage cost-center assignments only via the dedicated Cost centers page in Billing settings (or API).</p>
+        <a href="https://github.blog/changelog/2026-03-16-deprecating-the-cost-center-integration-on-the-enterprise-people-page" target="_blank">Read changelog →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BASICS -->
+<section id="basics">
+  <div class="section-label">🍪 The basics</div>
+  <h2 class="section-title">It's a shared cookie jar</h2>
+  <p class="section-sub">Every seat you buy adds AI Credits (AIC) to one shared pool for your enterprise. Everyone draws from the same jar. <strong>1 AIC = $0.01</strong> (100 AIC = $1).</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <h3>You get a shared AI Credit pool</h3>
+    <div class="step-tag">Buying seats fills the jar</div>
+    <div class="jar-viz">
+      <div class="jar"><div class="jar-coins">💰💰💰</div></div>
+      <div class="jar-info">
+        <h4>How much per seat?</h4>
+        <p><strong>Copilot Business:</strong> $19/seat → 1,900 AIC into the pool</p>
+        <p><strong>Copilot Enterprise:</strong> $39/seat → 3,900 AIC into the pool</p>
+        <p style="margin-top: 0.75rem;"><em>Example: 1,000 freenet users on Enterprise = 3,900,000 AIC ($39,000) included every month.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <h3>What consumes credits?</h3>
+    <div class="step-tag">Not all Copilot features eat credits</div>
+    <div class="feat-split">
+      <div class="feat-col paid">
+        <h4>💸 Draws from the jar</h4>
+        <ul>
+          <li>Copilot Chat (premium models)</li>
+          <li>Agent mode (in IDE)</li>
+          <li>Copilot Coding Agent (cloud)</li>
+          <li>Copilot Code Review (CCR) — <strong>+ Actions minutes</strong></li>
+          <li>Copilot CLI</li>
+          <li>Copilot Spaces / Spark</li>
+          <li>Third-party coding agents</li>
+          <li>Agentic Workflows (org-billed)</li>
+        </ul>
+      </div>
+      <div class="feat-col free">
+        <h4>🆓 Free — never touches the jar</h4>
+        <ul>
+          <li>Inline code completions (ghost text)</li>
+          <li>Next edit suggestions</li>
+          <li>Unlimited on every paid plan</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <h3>When the jar is empty</h3>
+    <div class="step-tag">Metered billing begins</div>
+    <p class="step-body">Once your included credits run out, every additional AIC is billed at the end of the month — <strong>only up to the spending budget you set</strong>. No budget = no overage allowed.</p>
+    <div class="warn">
+      <h4>🚨 Always turn ON "Stop usage when budget exceeded"</h4>
+      <p>Without it, the limit is just a notification — the meter keeps running and you can be billed for unlimited overage.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GUARDS -->
+<section id="guards">
+  <div class="section-label">🛡️ The four guards</div>
+  <h2 class="section-title">Four controls to stay in control</h2>
+  <p class="section-sub">Two guards protect <em>the jar</em> (so one person can't drain it). Two guards protect <em>your wallet</em> (so you can't be billed beyond a cap).</p>
+
+  <div class="guard-grid">
+    <div class="guard">
+      <div class="guard-shield">🛡️</div>
+      <div class="guard-num">GUARD #1 · PROTECTS THE JAR</div>
+      <h4>User-Level Budget (ULB)</h4>
+      <div class="guard-purpose">For AI Credits → caps TOTAL usage per user (not just overage)</div>
+      <p>Limits how many AIC <em>one user</em> can consume per month. Set a universal default or override for specific groups. <strong>GA since June 1, 2026.</strong></p>
+      <div class="how"><strong>How:</strong> Enterprise → Settings → Billing → Budgets → Add user-level budget. For 1,000+ users, use the <strong>Budget API</strong>.</div>
+    </div>
+
+    <div class="guard">
+      <div class="guard-shield">⭐</div>
+      <div class="guard-num">GUARD #2 · PROTECTS THE JAR</div>
+      <h4>Individual user overrides</h4>
+      <div class="guard-purpose">Higher caps for power users</div>
+      <p>Override the default ULB for specific users (e.g. platform engineers, AI champions) so they get a bigger slice without lifting the cap for everyone.</p>
+      <div class="how"><strong>How:</strong> Same Budgets page → "Create budget for specific user" → choose users → set higher amount.</div>
+    </div>
+
+    <div class="guard">
+      <div class="guard-shield">🏦</div>
+      <div class="guard-num">GUARD #3 · PROTECTS YOUR WALLET</div>
+      <h4>Enterprise spending limit</h4>
+      <div class="guard-purpose">Caps total additional (overage) spend</div>
+      <p>The maximum dollar amount your enterprise can be billed beyond included usage. <em>New:</em> you can now also create an enterprise budget that <strong>excludes cost-center usage</strong>, so specific business units can have their own headroom.</p>
+      <div class="how"><strong>How:</strong> Enterprise → Settings → Billing → Budgets → Enterprise-scoped budget. Toggle "Exclude cost-center usage" if needed.</div>
+    </div>
+
+    <div class="guard">
+      <div class="guard-shield">👥</div>
+      <div class="guard-num">GUARD #4 · PROTECTS YOUR WALLET</div>
+      <h4>Cost-center budget</h4>
+      <div class="guard-purpose">Caps additional spend per business unit</div>
+      <p>Group users, repos or orgs into cost centers (e.g. <em>md.de</em>, <em>mobilcom-debitel</em>, <em>Platform Engineering</em>) and cap each one. Enables chargeback, blocks one BU from burning the whole overage. <strong>Up to 500 cost centers per enterprise.</strong></p>
+      <div class="how"><strong>How:</strong> Billing → Cost centers → Create → assign users/repos/orgs → then Budgets → Create budget scoped to that cost center.</div>
+    </div>
+  </div>
+
+  <div class="warn" style="margin-top: 2rem;">
+    <h4>⚠️ What UBB still can't do (today)</h4>
+    <p>• <strong>No org-level ringfence of the included pool</strong> — heavy users in one org can drain shared credits other orgs were counting on. Workaround: cost-center budgets on the overage side.<br>
+    • <strong>Agentic workflows billed to the org bypass ULBs.</strong> Control them via cost-center budgets + the agentic-workflows cost-management tools (<code>gh.io/gh-aw-cost</code>).<br>
+    • <strong>A user / repo / org can be assigned to only ONE cost center at a time.</strong> Assigning to a new one auto-removes from the old one.</p>
+  </div>
+</section>
+
+<!-- SEGMENTATION - the customer ask -->
+<section id="segmentation">
+  <div class="section-label">🎯 Customer ask</div>
+  <h2 class="section-title">Optimal setup for user segmentation & targeted billing</h2>
+  <p class="section-sub">Most enterprises don't need flat ULBs. Segment your users by role, give each segment its own budget envelope and use cost centers to map to chargeback business units.</p>
+
+  <div class="segment">
+    <h3>Recommended freenet AG segmentation pattern</h3>
+    <p style="color: var(--text-muted); font-size: 0.92rem;">Combine <strong>ULBs</strong> (per-user cap) with <strong>cost centers</strong> (per-team chargeback) for the strongest control.</p>
+
+    <div class="segment-grid">
+      <div class="seg-card">
+        <div class="seg-emoji">🌱</div>
+        <h5>Light users</h5>
+        <p>Occasional Chat users, mostly inline completions. Bulk of your seats.</p>
+        <span class="seg-budget">ULB: ~$10 / mo</span>
+      </div>
+      <div class="seg-card">
+        <div class="seg-emoji">👩‍💻</div>
+        <h5>Standard developers</h5>
+        <p>Daily Chat + occasional agent mode. The default tier.</p>
+        <span class="seg-budget">ULB: ~$30 / mo</span>
+      </div>
+      <div class="seg-card">
+        <div class="seg-emoji">🚀</div>
+        <h5>Power / platform engineers</h5>
+        <p>Heavy agent use, CCR, CLI, Spaces. Drive most of the value.</p>
+        <span class="seg-budget">ULB: ~$80 / mo</span>
+      </div>
+      <div class="seg-card">
+        <div class="seg-emoji">🤖</div>
+        <h5>Automation / agentic workflows</h5>
+        <p>Org-billed agentic runs. ULBs don't apply — control via cost-center budget.</p>
+        <span class="seg-budget">Cost-center cap</span>
+      </div>
+    </div>
+
+    <div style="margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--bg-card); border-radius: 8px; border-left: 3px solid var(--accent-purple);">
+      <strong style="color: var(--accent-purple);">💡 freenet recommendation:</strong> <span style="color: var(--text-muted); font-size: 0.9rem;">Create one cost center per legal entity / brand (e.g. <em>freenet AG</em>, <em>mobilcom-debitel</em>, <em>md.de</em>, <em>Platform Engineering</em>), assign all orgs into them, set both a cost-center budget AND ULBs. Use the <a href="https://gh.io/budget-api-docs" target="_blank" style="color: var(--accent);">Budget API</a> to roll out ULBs in bulk based on AAD groups.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ADJUST -->
+<section id="adjust">
+  <div class="section-label">⚙️ Step-by-step</div>
+  <h2 class="section-title">How to adjust every billing option</h2>
+  <p class="section-sub">Exact paths, what each setting does and the trade-offs — for cost centers, budgets, ULBs, enterprise limits and more.</p>
+
+  <!-- 1. Cost center -->
+  <div class="adjust-card">
+    <div class="adjust-head">
+      <div class="ah-icon">🏢</div>
+      <h4>Cost center</h4>
+      <span class="new-pill">NEW: 500 max</span>
+    </div>
+    <div class="where">Enterprise → Settings → Billing & licensing → Cost centers</div>
+    <p class="desc">A cost center is a group of users, repositories or organizations that you want to track and bill together — typically a business unit, brand, product or department. Cost centers are the foundation for chargeback and granular spend control.</p>
+    <div class="path">enterprise / your-enterprise / settings / billing / cost-centers</div>
+    <ol>
+      <li>Click <strong>Cost centers</strong> → <strong>New cost center</strong></li>
+      <li>Name it after the business unit (e.g. <em>md.de — Web Platform</em>)</li>
+      <li>Add resources — pick <strong>users</strong>, <strong>repositories</strong> and/or <strong>organizations</strong></li>
+      <li>Save. From now on all UBB usage of those resources is attributed to this cost center</li>
+      <li>(Optional) Attach a budget — see "Cost-center budget" below</li>
+    </ol>
+    <div class="tip">⚠️ A resource can only live in <strong>one</strong> cost center at a time. Reassigning auto-removes from the previous one. Plan your hierarchy first. The People-page cost-center integration was deprecated in March 2026 — use this page (or the API) only.</div>
+  </div>
+
+  <!-- 2. User-Level Budget -->
+  <div class="adjust-card">
+    <div class="adjust-head">
+      <div class="ah-icon">✍️</div>
+      <h4>User-Level Budget (ULB)</h4>
+      <span class="new-pill">GA</span>
+    </div>
+    <div class="where">Enterprise → Settings → Billing & licensing → Budgets</div>
+    <p class="desc">Caps how much <strong>one user</strong> can consume. For AI Credits, this controls <em>total</em> usage — not just overage — so it directly protects the shared pool. Use a universal default + targeted overrides for power users.</p>
+    <div class="path">enterprise / your-enterprise / settings / billing / budgets</div>
+    <ol>
+      <li>Click <strong>New budget</strong> → choose scope <strong>User</strong></li>
+      <li>Select <strong>All users</strong> for the default, or pick specific users / a group for overrides</li>
+      <li>Set the <strong>budget amount</strong> in USD (e.g. $30 / month for standard devs)</li>
+      <li>Pick the product = <strong>GitHub Copilot</strong> (or "AI Credits")</li>
+      <li><strong>Turn ON</strong> "Stop usage when budget is exceeded" 🚨</li>
+      <li>Configure alert thresholds (e.g. 75% & 90% email to admin)</li>
+    </ol>
+    <div class="tip">💡 For 100+ users, use the <a href="https://gh.io/budget-api-docs" target="_blank" style="color: var(--accent);">Budget API</a> to roll out the default + per-user overrides programmatically — sync it with AAD group membership.</div>
+  </div>
+
+  <!-- 3. Cost-center budget -->
+  <div class="adjust-card">
+    <div class="adjust-head">
+      <div class="ah-icon">👥</div>
+      <h4>Cost-center budget</h4>
+    </div>
+    <div class="where">Enterprise → Settings → Billing & licensing → Budgets</div>
+    <p class="desc">Caps total <strong>additional (overage) spend</strong> for everything assigned to a cost center. The only way to ringfence overage spend per business unit and enable chargeback-style accountability.</p>
+    <div class="path">budgets / new → Scope: Cost center → pick cost center</div>
+    <ol>
+      <li>Create the cost center first (see above)</li>
+      <li>Click <strong>New budget</strong> → scope <strong>Cost center</strong> → pick it</li>
+      <li>Set USD cap for additional spend (e.g. $2,000 / month for md.de)</li>
+      <li>Choose product = Copilot, Actions, Packages, etc. — or "All products"</li>
+      <li><strong>Turn ON</strong> "Stop usage when budget exceeded"</li>
+      <li>Add notification thresholds and recipients (cost-center owner + finance)</li>
+    </ol>
+    <div class="tip">💡 Best practice: combine this with ULBs. Cost-center budget = financial cap. ULB = fair-share inside the cost center.</div>
+  </div>
+
+  <!-- 4. Enterprise spending limit -->
+  <div class="adjust-card">
+    <div class="adjust-head">
+      <div class="ah-icon">🏦</div>
+      <h4>Enterprise spending limit (enterprise-scoped budget)</h4>
+      <span class="new-pill">NEW: exclude cost centers</span>
+    </div>
+    <div class="where">Enterprise → Settings → Billing & licensing → Budgets</div>
+    <p class="desc">The master ceiling on total additional spend for the whole enterprise. Now (preview) supports an option to <strong>exclude cost-center usage</strong> so you can set a "default-everyone-else" cap and let specific cost centers run with their own budgets.</p>
+    <div class="path">budgets / new → Scope: Enterprise</div>
+    <ol>
+      <li>Click <strong>New budget</strong> → scope <strong>Enterprise</strong></li>
+      <li>Set the total USD cap</li>
+      <li><strong>NEW:</strong> Toggle <em>"Exclude cost-center usage"</em> if you want cost centers managed independently</li>
+      <li>Turn ON "Stop usage when budget exceeded"</li>
+      <li>Notify enterprise billing managers at 75/90/100%</li>
+    </ol>
+    <div class="tip">💡 Ask your GitHub account team to baseline your current AIC consumption before setting this — it's much better than guessing.</div>
+  </div>
+
+  <!-- 5. Stop usage switch -->
+  <div class="adjust-card">
+    <div class="adjust-head">
+      <div class="ah-icon">🛑</div>
+      <h4>"Stop usage when budget exceeded" toggle</h4>
+    </div>
+    <div class="where">On every budget you create (User, Cost center, Enterprise)</div>
+    <p class="desc">The single most important setting in UBB. <strong>OFF</strong> = budget is just a notification, charges keep accruing. <strong>ON</strong> = hard stop, no surprise bills. Always ON unless you have a specific business reason.</p>
+    <div class="tip">🚨 Turn ON for every budget. If a team gets blocked mid-month, you can always raise the budget — that takes seconds. Recovering from a surprise bill takes weeks.</div>
+  </div>
+
+  <!-- 6. Alerts / notifications -->
+  <div class="adjust-card">
+    <div class="adjust-head">
+      <div class="ah-icon">🔔</div>
+      <h4>Budget alerts & email notifications</h4>
+    </div>
+    <div class="where">Configured inside each budget</div>
+    <p class="desc">Trigger emails at custom % thresholds. Always notify both the budget owner (e.g. team lead) and central billing managers, so nobody is surprised when the hard stop kicks in.</p>
+    <ol>
+      <li>Open the budget</li>
+      <li>Add thresholds (recommended: 50%, 75%, 90%, 100%)</li>
+      <li>Add recipients — billing managers + cost-center owner</li>
+    </ol>
+  </div>
+
+  <!-- 7. Billing API -->
+  <div class="adjust-card">
+    <div class="adjust-head">
+      <div class="ah-icon">🔌</div>
+      <h4>Bulk management via the Budget & Usage API</h4>
+      <span class="new-pill">GA</span>
+    </div>
+    <div class="where">REST API · <code>/enterprises/{enterprise}/settings/billing/budgets</code></div>
+    <p class="desc">Manage the entire lifecycle of budgets via API — create, update, delete, change amount, change alerts. Required for any freenet rollout at scale (hundreds of users / dozens of cost centers).</p>
+    <ol>
+      <li>Generate a PAT or GitHub App with <strong>Manage billing</strong> permission</li>
+      <li>POST budgets in bulk from a script driven by AAD group membership</li>
+      <li>Use the new <strong>Usage summary API</strong> to pull consumption by org / repo / cost center / SKU for chargeback</li>
+      <li>Schedule monthly review — adjust ULBs based on actual usage</li>
+    </ol>
+    <div class="tip">📘 Docs: <a href="https://gh.io/budget-api-docs" target="_blank" style="color: var(--accent);">Budget API</a> · <a href="https://gh.io/usage-summary-api" target="_blank" style="color: var(--accent);">Usage Summary API</a></div>
+  </div>
+
+  <!-- 8. Cost center / org assignment for Copilot Code Review -->
+  <div class="adjust-card">
+    <div class="adjust-head">
+      <div class="ah-icon">🧐</div>
+      <h4>Copilot Code Review (CCR) runner config</h4>
+      <span class="new-pill">NEW: org-default runner</span>
+    </div>
+    <div class="where">Organization → Copilot settings → Code review → Runners</div>
+    <p class="desc">Since June 1, 2026, CCR consumes <strong>GitHub Actions minutes</strong> on top of AI Credits. You can now set a default Actions runner at the organization level instead of per repo. Choose your runner type carefully — large runners burn minutes 10× faster.</p>
+    <ol>
+      <li>Org → <strong>Copilot</strong> → <strong>Code review</strong> → <strong>Configure runners</strong></li>
+      <li>Pick a GitHub-hosted standard runner as the org default</li>
+      <li>Override per repo only when needed (e.g. monorepo needing larger runner)</li>
+    </ol>
+  </div>
+
+  <!-- 9. Agentic workflows billing -->
+  <div class="adjust-card">
+    <div class="adjust-head">
+      <div class="ah-icon">🤖</div>
+      <h4>Agentic Workflows — bill to org</h4>
+      <span class="new-pill">NEW</span>
+    </div>
+    <div class="where">Workflow markdown frontmatter + Copilot policy</div>
+    <p class="desc">Agentic workflows can now run with <code>GITHUB_TOKEN</code> instead of a PAT, billing AIC directly to the organization. <strong>ULBs do not apply</strong> in this mode (no user is attributed), so control these via cost-center budgets + per-workflow caps.</p>
+    <ol>
+      <li>Enable Copilot policy <em>"Allow use of Copilot CLI billed to the organization"</em></li>
+      <li>In the workflow frontmatter add <code>permissions: copilot-requests: write</code></li>
+      <li>Compile and push the updated lockfile</li>
+      <li>Add the workflow's org to a dedicated <strong>"Automation"</strong> cost center with its own budget</li>
+      <li>Use the agentic-workflows cost-management tools (<a href="https://gh.io/gh-aw-cost" target="_blank" style="color: var(--accent);">gh.io/gh-aw-cost</a>) to cap per-run token usage</li>
+    </ol>
+  </div>
+</section>
+
+<!-- CHECKLIST -->
+<section id="checklist">
+  <div class="section-label">✅ freenet AG checklist</div>
+  <h2 class="section-title">Six-step rollout for production</h2>
+
+  <div class="checklist">
+    <h3>UBB setup for freenet AG</h3>
+    <ol>
+      <li><strong>Map cost centers to brands / BUs</strong><span>Create one cost center per legal entity / brand (freenet AG, mobilcom-debitel, md.de, Platform Engineering). Assign all GitHub orgs into them. ≤ 500 supported.</span></li>
+      <li><strong>Set a default ULB for "standard developer"</strong><span>~$30 / month covers daily Chat + occasional agent usage. Apply to all users via the API.</span></li>
+      <li><strong>Override ULB for power users</strong><span>Identify the top ~5% by AIC consumption (Usage metrics API → <code>ai_credits_used</code>) and bump them to ~$80.</span></li>
+      <li><strong>Set per-cost-center budgets</strong><span>Each BU gets its own additional-spend cap. Use the "exclude cost-center usage" enterprise option so BUs are independent.</span></li>
+      <li><strong>Set the enterprise master cap</strong><span>One final ceiling for everything else. Ask your GitHub account team to baseline first.</span></li>
+      <li><strong>Turn ON "Stop usage" on every budget · review monthly</strong><span>If users are blocked → raise budget. If jar lasts the whole month → tighten or expand seats. Use Usage summary API for chargeback reporting.</span></li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <p>Built for freenet AG · GitHub Copilot UBB explainer · Updated June 25, 2026</p>
+  <p style="margin-top: 0.5rem;">Sources: <a href="https://github.blog/changelog" target="_blank">GitHub Changelog</a> · <a href="https://docs.github.com/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises" target="_blank">Copilot UBB docs</a> · <a href="https://docs.github.com/billing/tutorials/set-up-budgets" target="_blank">Budgets docs</a> · Original animated explainer by Microsoft Asia Developer GBB</p>
+  <p style="margin-top: 0.5rem; font-size: 0.75rem;">Always verify settings against official GitHub documentation before making changes.</p>
+</footer>
+
+</body>
+</html>
