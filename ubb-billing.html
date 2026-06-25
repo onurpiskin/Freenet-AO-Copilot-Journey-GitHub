@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GitHub Copilot UBB Billing — Simply Explained · freenet AG</title>
+<title>GitHub Copilot UBB Billing — Simply Explained</title>
 <style>
   :root {
     --bg: #0d1117;
@@ -153,12 +153,12 @@
 <body>
 
 <nav>
-  <div class="logo">⬡ Copilot UBB Billing · freenet AG</div>
+  <div class="logo">⬡ GitHub Copilot · Usage-Based Billing</div>
   <ul class="nav-links">
-    <li><a href="index.html">← Home</a></li>
     <li><a href="#whats-new">What's New</a></li>
     <li><a href="#basics">Basics</a></li>
     <li><a href="#guards">Controls</a></li>
+    <li><a href="#usage">Usage Overview</a></li>
     <li><a href="#segmentation">Segmentation</a></li>
     <li><a href="#adjust">How to Adjust</a></li>
     <li><a href="#checklist">Setup</a></li>
@@ -170,7 +170,7 @@
   <div class="hero-content">
     <div class="hero-badge">✅ LIVE since June 1, 2026 — Usage-Based Billing is now active for all Copilot plans</div>
     <h1><span class="grad-c">GitHub Copilot</span><br>Usage-Based Billing,<br><span class="grad-g">simply explained</span></h1>
-    <p class="subtitle">One shared credit pool. Pay-as-you-go beyond it. Four guards to stay in control. This page explains how UBB works on GitHub Enterprise Cloud — and exactly how to adjust cost centers, budgets and user segmentation for freenet AG.</p>
+    <p class="subtitle">One shared credit pool. Pay-as-you-go beyond it. Four guards to stay in control — plus full visibility into who is using how much. This page explains how UBB works on GitHub Enterprise Cloud and exactly how to adjust cost centers, budgets, user segmentation and usage reporting.</p>
     <div class="hero-cta">
       <a href="#basics" class="btn btn-primary">Understand UBB in 5 minutes</a>
       <a href="#adjust" class="btn btn-secondary">Jump to settings</a>
@@ -260,7 +260,7 @@
         <h4>How much per seat?</h4>
         <p><strong>Copilot Business:</strong> $19/seat → 1,900 AIC into the pool</p>
         <p><strong>Copilot Enterprise:</strong> $39/seat → 3,900 AIC into the pool</p>
-        <p style="margin-top: 0.75rem;"><em>Example: 1,000 freenet users on Enterprise = 3,900,000 AIC ($39,000) included every month.</em></p>
+        <p style="margin-top: 0.75rem;"><em>Example: 1,000 users on Enterprise = 3,900,000 AIC ($39,000) included every month.</em></p>
       </div>
     </div>
   </div>
@@ -345,7 +345,7 @@
       <div class="guard-num">GUARD #4 · PROTECTS YOUR WALLET</div>
       <h4>Cost-center budget</h4>
       <div class="guard-purpose">Caps additional spend per business unit</div>
-      <p>Group users, repos or orgs into cost centers (e.g. <em>md.de</em>, <em>mobilcom-debitel</em>, <em>Platform Engineering</em>) and cap each one. Enables chargeback, blocks one BU from burning the whole overage. <strong>Up to 500 cost centers per enterprise.</strong></p>
+      <p>Group users, repos or orgs into cost centers (e.g. per business unit, brand, product team or department) and cap each one. Enables chargeback, blocks one BU from burning the whole overage. <strong>Up to 500 cost centers per enterprise.</strong></p>
       <div class="how"><strong>How:</strong> Billing → Cost centers → Create → assign users/repos/orgs → then Budgets → Create budget scoped to that cost center.</div>
     </div>
   </div>
@@ -358,14 +358,220 @@
   </div>
 </section>
 
+<!-- USAGE OVERVIEW - who is using what & how much -->
+<section id="usage">
+  <div class="section-label">📊 Visibility</div>
+  <h2 class="section-title">Who is using what, and how much?</h2>
+  <p class="section-sub">UBB only works if you can see consumption. GitHub offers <strong>four different surfaces</strong> for usage visibility — from a no-code dashboard to a full REST API. Here's where to look for what.</p>
+
+  <!-- Quick comparison -->
+  <div class="feat-split" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+    <div class="feat-col" style="border-color: var(--accent);">
+      <h4 style="color: var(--accent);">📈 Copilot metrics dashboard</h4>
+      <ul>
+        <li><strong>Use for:</strong> Adoption trends, active users, language/IDE/feature breakdown</li>
+        <li><strong>Granularity:</strong> Org + enterprise, daily aggregate</li>
+        <li><strong>Status:</strong> GA (Feb 2026)</li>
+        <li><strong>Audience:</strong> Org/enterprise admins</li>
+      </ul>
+    </div>
+    <div class="feat-col" style="border-color: var(--accent-purple);">
+      <h4 style="color: var(--accent-purple);">💳 Billing & licensing UI</h4>
+      <ul>
+        <li><strong>Use for:</strong> Current spend, budget consumption, included vs additional AIC</li>
+        <li><strong>Granularity:</strong> Enterprise, org, cost center, product, SKU</li>
+        <li><strong>Status:</strong> GA</li>
+        <li><strong>Audience:</strong> Billing managers, finance</li>
+      </ul>
+    </div>
+    <div class="feat-col" style="border-color: var(--accent-orange);">
+      <h4 style="color: var(--accent-orange);">📑 AI usage report (CSV)</h4>
+      <ul>
+        <li><strong>Use for:</strong> Detailed line-items per user, day, SKU — for chargeback & audit</li>
+        <li><strong>Granularity:</strong> Daily, per user, per SKU</li>
+        <li><strong>Status:</strong> GA</li>
+        <li><strong>Audience:</strong> Finance, FinOps</li>
+      </ul>
+    </div>
+    <div class="feat-col" style="border-color: var(--accent-green);">
+      <h4 style="color: var(--accent-green);">🔌 REST APIs</h4>
+      <ul>
+        <li><strong>Use for:</strong> Automation, BI integration, per-user AIC reporting</li>
+        <li><strong>Granularity:</strong> Anything — by user, team, org, cost center, day</li>
+        <li><strong>Status:</strong> GA (Jun 2026)</li>
+        <li><strong>Audience:</strong> Platform & data teams</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Surface 1: Dashboard -->
+  <div class="adjust-card" style="margin-top: 2rem;">
+    <div class="adjust-head">
+      <div class="ah-icon">📈</div>
+      <h4>1. Copilot metrics dashboard (no-code UI)</h4>
+      <span class="new-pill">GA Feb 2026</span>
+    </div>
+    <div class="where">Organization → Copilot → Usage · OR · Enterprise → Copilot → Usage</div>
+    <p class="desc">The fastest way to see <strong>active users, engaged users, suggestions accepted, IDE breakdown, language breakdown, Chat/PR-summary/agent activity</strong> for the last 28 days. Includes auto-resolved model names, Copilot CLI, cloud agent and plan mode.</p>
+    <div class="path">github.com / organizations / YOUR-ORG / settings / copilot/usage</div>
+    <ol>
+      <li>Sign in as <strong>org owner</strong> or <strong>enterprise admin</strong></li>
+      <li>Go to <strong>Organization → Copilot → Usage</strong> (or Enterprise → Copilot → Usage)</li>
+      <li>Pick a date range (last 28 days max in the UI)</li>
+      <li>Tabs: <strong>Overview</strong>, <strong>Languages</strong>, <strong>Editors</strong>, <strong>Chat</strong>, <strong>Code completions</strong>, <strong>Pull request</strong></li>
+      <li>Export as CSV from the dashboard if you need to slice further</li>
+    </ol>
+    <div class="tip">💡 The dashboard answers "<em>is Copilot being adopted?</em>" — not "<em>who spent how many dollars?</em>". For dollars and AIC, use the Billing UI or the API (below).</div>
+  </div>
+
+  <!-- Surface 2: Billing & licensing -->
+  <div class="adjust-card">
+    <div class="adjust-head">
+      <div class="ah-icon">💳</div>
+      <h4>2. Billing & licensing UI — current spend</h4>
+    </div>
+    <div class="where">Enterprise → Settings → Billing & licensing → Usage</div>
+    <p class="desc">The authoritative view of <strong>what you owe right now</strong>. Shows included vs additional AIC, dollar spend, budget consumption with progress bars, and breakdown by product (Copilot, Actions, Packages, Codespaces, GHAS).</p>
+    <div class="path">github.com / enterprises / YOUR-ENT / settings / billing</div>
+    <ol>
+      <li>Enterprise → <strong>Settings → Billing & licensing</strong></li>
+      <li><strong>Usage</strong> tab → filter by product = <em>GitHub Copilot</em></li>
+      <li>Group by <strong>Cost center</strong>, <strong>Organization</strong>, <strong>Repository</strong> or <strong>SKU</strong></li>
+      <li><strong>Budgets</strong> tab → see each budget with consumed % and status</li>
+      <li><strong>Cost centers</strong> tab → see spend per cost center</li>
+      <li>Click <strong>Get usage report</strong> → download CSV (see surface #3)</li>
+    </ol>
+    <div class="tip">💡 Org owners (not just enterprise admins) can see their own organization's usage at <code>github.com/organizations/YOUR-ORG/settings/billing</code>.</div>
+  </div>
+
+  <!-- Surface 3: AI usage report CSV -->
+  <div class="adjust-card">
+    <div class="adjust-head">
+      <div class="ah-icon">📑</div>
+      <h4>3. AI usage report (CSV download)</h4>
+    </div>
+    <div class="where">Enterprise → Settings → Billing & licensing → Usage → Get usage report</div>
+    <p class="desc">A row-per-event CSV for finance and chargeback. Every line tells you <strong>which user, which day, which product/SKU, how many AI Credits, and how many dollars</strong>. Now uses <code>quantity</code> (AIC) and <code>gross_amount</code> (USD) as the standard fields.</p>
+    <div class="path">CSV columns: date · user · organization · repository · cost_center · sku · quantity · gross_amount</div>
+    <ol>
+      <li>Go to Billing → <strong>Usage</strong> → click <strong>Get usage report</strong></li>
+      <li>Pick the period (year, month or day)</li>
+      <li>Download the CSV — open in Excel / load into your BI / data warehouse</li>
+      <li>Pivot by <code>user</code> to answer "<em>who used the most?</em>"</li>
+      <li>Pivot by <code>cost_center</code> for chargeback</li>
+      <li>Pivot by <code>sku</code> to see which premium models / features drove spend</li>
+    </ol>
+    <div class="tip">⚠️ Since June 1, 2026 the legacy <code>aic_quantity</code> / <code>aic_gross_amount</code> preview columns are zero for AI-credit usage. Use <code>quantity</code> and <code>gross_amount</code> going forward.</div>
+  </div>
+
+  <!-- Surface 4: APIs -->
+  <div class="adjust-card">
+    <div class="adjust-head">
+      <div class="ah-icon">🔌</div>
+      <h4>4. REST APIs — automation & per-user reporting</h4>
+      <span class="new-pill">GA Jun 2026</span>
+    </div>
+    <div class="where">REST · works at enterprise, org, repo, cost-center level</div>
+    <p class="desc">Three APIs cover the full visibility story. Combine them for "<em>which user, in which team, in which cost center, burned how many AI Credits this month?</em>"</p>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.75rem; margin-top: 1rem;">
+
+      <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
+        <h5 style="font-size: 0.95rem; color: var(--accent); margin-bottom: 0.4rem;">🟢 Copilot usage metrics API</h5>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.5rem;">Per-user adoption + AI credit consumption. <strong>NEW field: <code>ai_credits_used</code></strong> (Jun 19, 2026).</p>
+        <code style="font-size: 0.75rem; color: var(--accent); word-break: break-all;">GET /enterprises/{ent}/copilot/metrics<br>GET /enterprises/{ent}/copilot/usage/users-1-day<br>GET /enterprises/{ent}/copilot/usage/users-28-day<br>GET /enterprises/{ent}/copilot/usage/user-teams</code>
+      </div>
+
+      <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
+        <h5 style="font-size: 0.95rem; color: var(--accent-green); margin-bottom: 0.4rem;">💰 Usage summary API</h5>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.5rem;">Spend by year / month / day, filterable by org, repo, cost center, product, SKU.</p>
+        <code style="font-size: 0.75rem; color: var(--accent-green); word-break: break-all;">GET /enterprises/{ent}/settings/billing/usage<br>GET /organizations/{org}/settings/billing/usage</code>
+      </div>
+
+      <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
+        <h5 style="font-size: 0.95rem; color: var(--accent-orange); margin-bottom: 0.4rem;">📋 Billing usage report API</h5>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.5rem;">Detailed line-item report (daily totals — hourly was removed in June 2026).</p>
+        <code style="font-size: 0.75rem; color: var(--accent-orange); word-break: break-all;">GET /enterprises/{ent}/settings/billing/usage</code>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top: 1rem;">💡 <strong>How to answer "who used what?"</strong><br>
+    1. Pull <code>users-28-day</code> from the metrics API → gives you <code>ai_credits_used</code> per user.<br>
+    2. Pull <code>user-teams</code> → maps each user to their team(s).<br>
+    3. Join with the Billing UI's cost-center assignments → gives you AIC by user × team × cost center.<br>
+    4. Build a Grafana / Power BI / Looker dashboard on top — refreshes daily.</div>
+  </div>
+
+  <!-- Common questions -->
+  <div class="segment" style="margin-top: 2rem;">
+    <h3>Common questions — and where to look</h3>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+      <div class="seg-card">
+        <div class="seg-emoji">🏆</div>
+        <h5>Who are my top consumers?</h5>
+        <p>Metrics API → <code>users-28-day</code>, sort by <code>ai_credits_used</code> desc. Or AI usage CSV → pivot by <code>user</code>.</p>
+      </div>
+      <div class="seg-card">
+        <div class="seg-emoji">📉</div>
+        <h5>Who has a license but isn't using it?</h5>
+        <p>Metrics dashboard → Engaged users vs Active users. Or compare seat list vs <code>users-28-day</code> response.</p>
+      </div>
+      <div class="seg-card">
+        <div class="seg-emoji">🏢</div>
+        <h5>How much did Business Unit X cost this month?</h5>
+        <p>Billing UI → Usage → filter by cost center. Or Usage Summary API with <code>cost_center</code> filter.</p>
+      </div>
+      <div class="seg-card">
+        <div class="seg-emoji">⚙️</div>
+        <h5>Which features drive my spend?</h5>
+        <p>AI usage CSV → pivot by <code>sku</code>. Common SKUs: Copilot Chat, Agent, CCR, CLI, Spaces, premium model add-ons.</p>
+      </div>
+      <div class="seg-card">
+        <div class="seg-emoji">📅</div>
+        <h5>Are we trending toward the budget cap?</h5>
+        <p>Billing UI → Budgets tab (live %). Or Usage Summary API with <code>granularity=day</code> → forecast.</p>
+      </div>
+      <div class="seg-card">
+        <div class="seg-emoji">🤖</div>
+        <h5>How much do agentic workflows cost?</h5>
+        <p>AI usage CSV filtered to Copilot CLI SKU + the automation org. Plus <code>gh.io/gh-aw-cost</code> tools per workflow run.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommended cadence -->
+  <div style="background: var(--bg-card); border: 1px solid var(--accent-green); border-radius: 14px; padding: 1.75rem; margin-top: 2rem;">
+    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">🗓️ Recommended review cadence</h3>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+      <div>
+        <h5 style="font-size: 0.95rem; margin-bottom: 0.4rem;">📅 Daily</h5>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Automated alert if any cost center crosses 75% of its budget (Usage Summary API + cron).</p>
+      </div>
+      <div>
+        <h5 style="font-size: 0.95rem; margin-bottom: 0.4rem;">📅 Weekly</h5>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Quick check of the Billing UI Usage tab. Look for unusual spikes.</p>
+      </div>
+      <div>
+        <h5 style="font-size: 0.95rem; margin-bottom: 0.4rem;">📅 Monthly</h5>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Pull the AI usage CSV, review top consumers, adjust ULBs, send chargeback report to BUs.</p>
+      </div>
+      <div>
+        <h5 style="font-size: 0.95rem; margin-bottom: 0.4rem;">📅 Quarterly</h5>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Re-baseline budgets with your account team based on 90-day trend. Right-size seats.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- SEGMENTATION - the customer ask -->
 <section id="segmentation">
-  <div class="section-label">🎯 Customer ask</div>
+  <div class="section-label">🎯 User segmentation</div>
   <h2 class="section-title">Optimal setup for user segmentation & targeted billing</h2>
   <p class="section-sub">Most enterprises don't need flat ULBs. Segment your users by role, give each segment its own budget envelope and use cost centers to map to chargeback business units.</p>
 
   <div class="segment">
-    <h3>Recommended freenet AG segmentation pattern</h3>
+    <h3>Recommended segmentation pattern</h3>
     <p style="color: var(--text-muted); font-size: 0.92rem;">Combine <strong>ULBs</strong> (per-user cap) with <strong>cost centers</strong> (per-team chargeback) for the strongest control.</p>
 
     <div class="segment-grid">
@@ -396,7 +602,7 @@
     </div>
 
     <div style="margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--bg-card); border-radius: 8px; border-left: 3px solid var(--accent-purple);">
-      <strong style="color: var(--accent-purple);">💡 freenet recommendation:</strong> <span style="color: var(--text-muted); font-size: 0.9rem;">Create one cost center per legal entity / brand (e.g. <em>freenet AG</em>, <em>mobilcom-debitel</em>, <em>md.de</em>, <em>Platform Engineering</em>), assign all orgs into them, set both a cost-center budget AND ULBs. Use the <a href="https://gh.io/budget-api-docs" target="_blank" style="color: var(--accent);">Budget API</a> to roll out ULBs in bulk based on AAD groups.</span>
+      <strong style="color: var(--accent-purple);">💡 Recommended pattern:</strong> <span style="color: var(--text-muted); font-size: 0.9rem;">Create one cost center per legal entity, brand or business unit. Assign all related orgs into them. Set both a cost-center budget AND user-level budgets. Use the <a href="https://gh.io/budget-api-docs" target="_blank" style="color: var(--accent);">Budget API</a> to roll out ULBs in bulk based on your identity provider groups (AAD, Okta, etc.).</span>
     </div>
   </div>
 </section>
@@ -419,7 +625,7 @@
     <div class="path">enterprise / your-enterprise / settings / billing / cost-centers</div>
     <ol>
       <li>Click <strong>Cost centers</strong> → <strong>New cost center</strong></li>
-      <li>Name it after the business unit (e.g. <em>md.de — Web Platform</em>)</li>
+      <li>Name it after the business unit (e.g. <em>Marketing Web Platform</em>, <em>Mobile Apps</em>, <em>R&D</em>)</li>
       <li>Add resources — pick <strong>users</strong>, <strong>repositories</strong> and/or <strong>organizations</strong></li>
       <li>Save. From now on all UBB usage of those resources is attributed to this cost center</li>
       <li>(Optional) Attach a budget — see "Cost-center budget" below</li>
@@ -445,7 +651,7 @@
       <li><strong>Turn ON</strong> "Stop usage when budget is exceeded" 🚨</li>
       <li>Configure alert thresholds (e.g. 75% & 90% email to admin)</li>
     </ol>
-    <div class="tip">💡 For 100+ users, use the <a href="https://gh.io/budget-api-docs" target="_blank" style="color: var(--accent);">Budget API</a> to roll out the default + per-user overrides programmatically — sync it with AAD group membership.</div>
+    <div class="tip">💡 For 100+ users, use the <a href="https://gh.io/budget-api-docs" target="_blank" style="color: var(--accent);">Budget API</a> to roll out the default + per-user overrides programmatically — sync it with your identity-provider groups.</div>
   </div>
 
   <!-- 3. Cost-center budget -->
@@ -460,7 +666,7 @@
     <ol>
       <li>Create the cost center first (see above)</li>
       <li>Click <strong>New budget</strong> → scope <strong>Cost center</strong> → pick it</li>
-      <li>Set USD cap for additional spend (e.g. $2,000 / month for md.de)</li>
+      <li>Set USD cap for additional spend (e.g. $2,000 / month per business unit)</li>
       <li>Choose product = Copilot, Actions, Packages, etc. — or "All products"</li>
       <li><strong>Turn ON</strong> "Stop usage when budget exceeded"</li>
       <li>Add notification thresholds and recipients (cost-center owner + finance)</li>
@@ -522,10 +728,10 @@
       <span class="new-pill">GA</span>
     </div>
     <div class="where">REST API · <code>/enterprises/{enterprise}/settings/billing/budgets</code></div>
-    <p class="desc">Manage the entire lifecycle of budgets via API — create, update, delete, change amount, change alerts. Required for any freenet rollout at scale (hundreds of users / dozens of cost centers).</p>
+    <p class="desc">Manage the entire lifecycle of budgets via API — create, update, delete, change amount, change alerts. Required for any rollout at scale (hundreds of users / dozens of cost centers).</p>
     <ol>
       <li>Generate a PAT or GitHub App with <strong>Manage billing</strong> permission</li>
-      <li>POST budgets in bulk from a script driven by AAD group membership</li>
+      <li>POST budgets in bulk from a script driven by your identity provider's group membership (AAD, Okta, Workday, etc.)</li>
       <li>Use the new <strong>Usage summary API</strong> to pull consumption by org / repo / cost center / SKU for chargeback</li>
       <li>Schedule monthly review — adjust ULBs based on actual usage</li>
     </ol>
@@ -569,13 +775,13 @@
 
 <!-- CHECKLIST -->
 <section id="checklist">
-  <div class="section-label">✅ freenet AG checklist</div>
+  <div class="section-label">✅ Rollout checklist</div>
   <h2 class="section-title">Six-step rollout for production</h2>
 
   <div class="checklist">
-    <h3>UBB setup for freenet AG</h3>
+    <h3>UBB setup checklist</h3>
     <ol>
-      <li><strong>Map cost centers to brands / BUs</strong><span>Create one cost center per legal entity / brand (freenet AG, mobilcom-debitel, md.de, Platform Engineering). Assign all GitHub orgs into them. ≤ 500 supported.</span></li>
+      <li><strong>Map cost centers to brands / business units</strong><span>Create one cost center per legal entity, brand or major team. Assign all GitHub orgs into them. Up to 500 supported per enterprise.</span></li>
       <li><strong>Set a default ULB for "standard developer"</strong><span>~$30 / month covers daily Chat + occasional agent usage. Apply to all users via the API.</span></li>
       <li><strong>Override ULB for power users</strong><span>Identify the top ~5% by AIC consumption (Usage metrics API → <code>ai_credits_used</code>) and bump them to ~$80.</span></li>
       <li><strong>Set per-cost-center budgets</strong><span>Each BU gets its own additional-spend cap. Use the "exclude cost-center usage" enterprise option so BUs are independent.</span></li>
@@ -586,8 +792,8 @@
 </section>
 
 <footer>
-  <p>Built for freenet AG · GitHub Copilot UBB explainer · Updated June 25, 2026</p>
-  <p style="margin-top: 0.5rem;">Sources: <a href="https://github.blog/changelog" target="_blank">GitHub Changelog</a> · <a href="https://docs.github.com/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises" target="_blank">Copilot UBB docs</a> · <a href="https://docs.github.com/billing/tutorials/set-up-budgets" target="_blank">Budgets docs</a> · Original animated explainer by Microsoft Asia Developer GBB</p>
+  <p>GitHub Copilot UBB explainer · Updated June 25, 2026</p>
+  <p style="margin-top: 0.5rem;">Sources: <a href="https://github.blog/changelog" target="_blank">GitHub Changelog</a> · <a href="https://docs.github.com/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises" target="_blank">Copilot UBB docs</a> · <a href="https://docs.github.com/billing/tutorials/set-up-budgets" target="_blank">Budgets docs</a> · <a href="https://docs.github.com/copilot/how-tos/administer-copilot/manage-for-organization/monitor-organization-usage" target="_blank">Copilot metrics docs</a></p>
   <p style="margin-top: 0.5rem; font-size: 0.75rem;">Always verify settings against official GitHub documentation before making changes.</p>
 </footer>
 
