@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Platform — A Visual Learning Guide · Enterprise · Advanced Security · Copilot</title>
+<meta name="description" content="An interactive learning guide that builds an intuitive mental model of GitHub Enterprise, GitHub Advanced Security, and GitHub Copilot Business — how each product works and how they fit together across the software development lifecycle.">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-alt: #0b0f14;
+    --bg-card: #161b22;
+    --bg-card-hover: #1c2129;
+    --bg-inset: #0d1117;
+    --border: #30363d;
+    --border-soft: #21262d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #6e7681;
+
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --purple: #bc8cff;
+    --orange: #d29922;
+    --red: #f85149;
+    --pink: #f778ba;
+    --cyan: #56d4dd;
+
+    /* product identity accents */
+    --ent: #58a6ff;   /* GitHub Enterprise  = blue   */
+    --sec: #3fb950;   /* Advanced Security  = green  */
+    --cop: #bc8cff;   /* Copilot Business   = purple */
+
+    --grad-github: linear-gradient(135deg, #58a6ff 0%, #3fb950 100%);
+    --grad-ent: linear-gradient(135deg, #388bfd 0%, #58a6ff 100%);
+    --grad-sec: linear-gradient(135deg, #2ea043 0%, #56d364 100%);
+    --grad-cop: linear-gradient(135deg, #bc8cff 0%, #f778ba 100%);
+    --grad-hero: linear-gradient(120deg, #58a6ff 0%, #bc8cff 50%, #3fb950 100%);
+
+    --shadow: 0 8px 30px rgba(1,4,9,0.6);
+    --radius: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  ::selection { background: rgba(88,166,255,0.32); }
+
+  /* ---------- NAV ---------- */
+  nav { position: fixed; top: 0; width: 100%; z-index: 200; background: rgba(13,17,23,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; }
+  nav .nav-inner { max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  nav .logo { font-weight: 800; font-size: 1rem; letter-spacing: -0.2px; display: flex; align-items: center; gap: 0.55rem; white-space: nowrap; }
+  nav .logo .mark { font-size: 1.15rem; }
+  nav .logo .grad { background: var(--grad-github); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  nav .nav-links { display: flex; gap: 1.2rem; list-style: none; overflow-x: auto; }
+  nav .nav-links::-webkit-scrollbar { display: none; }
+  nav .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.2s; white-space: nowrap; padding: 0.25rem 0; border-bottom: 2px solid transparent; }
+  nav .nav-links a:hover, nav .nav-links a.active { color: var(--text); border-bottom-color: var(--blue); }
+  @media (max-width: 900px){ nav .nav-links { display: none; } }
+
+  /* progress bar */
+  #progress { position: fixed; top: 60px; left: 0; height: 2px; width: 0%; background: var(--grad-hero); z-index: 201; transition: width 0.1s linear; }
+
+  /* ---------- HERO ---------- */
+  .hero { position: relative; min-height: 92vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 9rem 1.5rem 5rem; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(88,166,255,0.16) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 50% at 80% 30%, rgba(188,140,255,0.14) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 60% at 50% 100%, rgba(63,185,80,0.12) 0%, transparent 60%); }
+  .hero::after { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(48,54,61,0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(48,54,61,0.35) 1px, transparent 1px); background-size: 44px 44px; mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 0%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 0%, transparent 75%); opacity: 0.5; }
+  .hero-content { position: relative; z-index: 2; max-width: 940px; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.4rem 1.1rem; border-radius: 100px; border: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1.75rem; background: rgba(22,27,34,0.6); backdrop-filter: blur(4px); }
+  .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .hero h1 { font-size: clamp(2.3rem, 6vw, 4.4rem); font-weight: 850; line-height: 1.06; letter-spacing: -1.5px; margin-bottom: 1.5rem; }
+  .hero h1 .grad { background: var(--grad-hero); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .subtitle { font-size: clamp(1.02rem, 2.2vw, 1.25rem); color: var(--text-muted); max-width: 700px; margin: 0 auto 2.5rem; }
+  .hero-cta { display: inline-flex; gap: 0.9rem; flex-wrap: wrap; justify-content: center; }
+  .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.6rem; border-radius: 9px; font-weight: 650; font-size: 0.94rem; text-decoration: none; transition: transform 0.15s, opacity 0.15s, border-color 0.15s; cursor: pointer; }
+  .btn-primary { background: var(--grad-github); color: #04101f; }
+  .btn-secondary { border: 1px solid var(--border); color: var(--text); background: var(--bg-card); }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-secondary:hover { border-color: var(--blue); }
+
+  .hero-pillfacts { display: flex; gap: 1.5rem 2.5rem; flex-wrap: wrap; justify-content: center; margin-top: 3rem; }
+  .hero-pillfacts .pf { text-align: center; }
+  .hero-pillfacts .pf b { display: block; font-size: 1.5rem; font-weight: 800; }
+  .hero-pillfacts .pf span { font-size: 0.78rem; color: var(--text-dim); letter-spacing: 0.3px; }
+
+  /* ---------- SECTION SHELL ---------- */
+  section { padding: 5rem 1.5rem; max-width: 1160px; margin: 0 auto; scroll-margin-top: 76px; }
+  .section-head { max-width: 760px; margin-bottom: 3rem; }
+  .section-label { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.74rem; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; margin-bottom: 0.9rem; color: var(--blue); }
+  .section-label .num { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; opacity: 0.6; }
+  .section-title { font-size: clamp(1.7rem, 4vw, 2.7rem); font-weight: 820; line-height: 1.14; letter-spacing: -0.8px; margin-bottom: 1rem; }
+  .section-sub { color: var(--text-muted); font-size: 1.05rem; }
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); max-width: 1160px; margin: 0 auto; }
+
+  /* product-scoped accent — set --accent locally so components inherit it */
+  .p-ent { --accent: var(--ent); --grad-accent: var(--grad-ent); }
+  .p-sec { --accent: var(--sec); --grad-accent: var(--grad-sec); }
+  .p-cop { --accent: var(--cop); --grad-accent: var(--grad-cop); }
+  .p-ent .section-label { color: var(--ent); }
+  .p-sec .section-label { color: var(--sec); }
+  .p-cop .section-label { color: var(--cop); }
+
+  /* alternating band background */
+  .band { background: var(--bg-alt); border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); }
+  .band-inner { max-width: 1160px; margin: 0 auto; padding: 5rem 1.5rem; }
+
+  /* ---------- CARDS ---------- */
+  .grid { display: grid; gap: 1.25rem; }
+  .cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .auto-fit { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  @media (max-width: 860px){ .cols-2, .cols-3, .cols-4 { grid-template-columns: 1fr; } .cols-4.keep2 { grid-template-columns: 1fr 1fr; } }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.6rem; transition: transform 0.18s, border-color 0.18s, background 0.18s; position: relative; }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent, var(--blue)); background: var(--bg-card-hover); }
+  .card .ic { font-size: 1.7rem; margin-bottom: 0.85rem; display: inline-flex; width: 48px; height: 48px; align-items: center; justify-content: center; border-radius: 11px; background: color-mix(in srgb, var(--accent, var(--blue)) 14%, transparent); border: 1px solid color-mix(in srgb, var(--accent, var(--blue)) 30%, transparent); }
+  .card h3 { font-size: 1.08rem; font-weight: 720; margin-bottom: 0.45rem; letter-spacing: -0.2px; }
+  .card p { color: var(--text-muted); font-size: 0.9rem; }
+  .card .tag { position: absolute; top: 1.2rem; right: 1.2rem; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--accent, var(--blue)); }
+
+  /* feature card (structured what/why/when/problem/example) */
+  .fcard { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.18s, transform 0.18s; display: flex; flex-direction: column; }
+  .fcard:hover { border-color: var(--accent, var(--blue)); transform: translateY(-2px); }
+  .fcard .fc-head { padding: 1.3rem 1.4rem 1rem; border-bottom: 1px solid var(--border-soft); background: color-mix(in srgb, var(--accent, var(--blue)) 6%, transparent); }
+  .fcard .fc-head .fc-ic { font-size: 1.4rem; margin-bottom: 0.5rem; }
+  .fcard .fc-head h3 { font-size: 1.12rem; font-weight: 740; letter-spacing: -0.2px; }
+  .fcard .fc-head .fc-kicker { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--accent, var(--blue)); font-weight: 700; margin-top: 0.3rem; }
+  .fcard .fc-body { padding: 1.1rem 1.4rem 1.4rem; display: grid; gap: 0.75rem; }
+  .frow { display: grid; grid-template-columns: 92px 1fr; gap: 0.7rem; align-items: start; }
+  .frow .flabel { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-dim); padding-top: 2px; }
+  .frow .fval { font-size: 0.88rem; color: var(--text-muted); }
+  .frow .fval strong { color: var(--text); font-weight: 650; }
+  .frow.ex .fval { background: var(--bg-inset); border-left: 3px solid var(--accent, var(--blue)); border-radius: 0 7px 7px 0; padding: 0.6rem 0.75rem; font-size: 0.84rem; }
+  @media (max-width: 460px){ .frow { grid-template-columns: 1fr; gap: 0.15rem; } }
+
+  /* ---------- CALLOUTS ---------- */
+  .callout { border: 1px solid var(--border); border-left-width: 4px; border-radius: 10px; padding: 1.15rem 1.35rem; background: var(--bg-card); margin: 1.5rem 0; display: flex; gap: 0.9rem; }
+  .callout .co-ic { font-size: 1.3rem; flex-shrink: 0; }
+  .callout h4 { font-size: 0.95rem; font-weight: 720; margin-bottom: 0.3rem; }
+  .callout p { font-size: 0.9rem; color: var(--text-muted); }
+  .callout.info { border-left-color: var(--blue); }
+  .callout.tip { border-left-color: var(--green); }
+  .callout.warn { border-left-color: var(--orange); }
+  .callout.key { border-left-color: var(--purple); background: linear-gradient(135deg, rgba(188,140,255,0.07), rgba(88,166,255,0.04)); }
+
+  /* ---------- PILLARS (exec overview) ---------- */
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 1rem; }
+  @media (max-width: 860px){ .pillars { grid-template-columns: 1fr; } }
+  .pillar { border-radius: var(--radius); padding: 1.7rem; border: 1px solid var(--border); background: var(--bg-card); position: relative; overflow: hidden; }
+  .pillar::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--grad-accent, var(--grad-github)); }
+  .pillar .p-ic { font-size: 1.9rem; margin-bottom: 0.7rem; }
+  .pillar .p-role { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; color: var(--accent); margin-bottom: 0.3rem; }
+  .pillar h3 { font-size: 1.2rem; font-weight: 780; margin-bottom: 0.55rem; letter-spacing: -0.2px; }
+  .pillar p { font-size: 0.9rem; color: var(--text-muted); }
+  .pillar .p-tagline { margin-top: 0.9rem; font-size: 0.82rem; font-style: italic; color: var(--accent); }
+
+  /* diagram frame */
+  .diagram { background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-top: 2rem; overflow-x: auto; }
+  .diagram svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+  .diagram .dg-cap { text-align: center; font-size: 0.8rem; color: var(--text-dim); margin-top: 0.9rem; }
+
+  /* ---------- TIMELINE (SDLC) ---------- */
+  .timeline { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(190px, 1fr); gap: 0; overflow-x: auto; padding: 1rem 0 1.5rem; scroll-snap-type: x proximity; }
+  .tphase { scroll-snap-align: start; padding: 0 0.7rem; position: relative; }
+  .tphase:not(:last-child)::after { content: ''; position: absolute; top: 22px; left: 60%; right: -40%; height: 2px; background: linear-gradient(90deg, var(--accent, var(--blue)), var(--border)); }
+  .tphase .t-dot { width: 44px; height: 44px; border-radius: 50%; background: var(--bg-card); border: 2px solid var(--accent, var(--blue)); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; position: relative; z-index: 2; margin-bottom: 1rem; }
+  .tphase .t-name { font-weight: 750; font-size: 1rem; margin-bottom: 0.15rem; }
+  .tphase .t-idx { font-family: ui-monospace, monospace; font-size: 0.7rem; color: var(--text-dim); }
+  .tphase .t-block { margin-top: 0.8rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem; font-size: 0.8rem; }
+  .tphase .t-block .tb-row { margin-bottom: 0.55rem; }
+  .tphase .t-block .tb-row:last-child { margin-bottom: 0; }
+  .tphase .t-block .tb-lab { font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 800; color: var(--text-dim); display: block; margin-bottom: 0.15rem; }
+  .tphase .t-block .tb-val { color: var(--text-muted); }
+  .chip { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 6px; font-size: 0.72rem; font-weight: 600; margin: 0.1rem 0.15rem 0.1rem 0; }
+  .chip.ent { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .chip.sec { background: rgba(63,185,80,0.15); color: var(--green); }
+  .chip.cop { background: rgba(188,140,255,0.15); color: var(--purple); }
+  .scroll-hint { font-size: 0.76rem; color: var(--text-dim); text-align: right; margin-top: -0.5rem; }
+
+  /* ---------- JOURNEY (vertical) ---------- */
+  .journey { position: relative; margin-top: 1rem; padding-left: 2.4rem; }
+  .journey::before { content: ''; position: absolute; left: 15px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(180deg, var(--blue), var(--purple) 45%, var(--green)); }
+  .jstep { position: relative; margin-bottom: 1.4rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.4rem; transition: border-color 0.18s, transform 0.18s; }
+  .jstep:hover { transform: translateX(3px); border-color: var(--blue); }
+  .jstep .j-num { position: absolute; left: -2.4rem; top: 1.1rem; width: 32px; height: 32px; border-radius: 50%; background: var(--bg); border: 2px solid var(--blue); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; }
+  .jstep h4 { font-size: 1.05rem; font-weight: 730; margin-bottom: 0.35rem; }
+  .jstep p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.6rem; }
+  .jstep .j-active { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+
+  /* ---------- ANALOGY CARDS ---------- */
+  .analogy { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.6rem; position: relative; overflow: hidden; }
+  .analogy::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--grad-accent, var(--grad-github)); }
+  .analogy .a-emoji { font-size: 2rem; margin-bottom: 0.7rem; }
+  .analogy .a-name { font-size: 0.98rem; font-weight: 750; margin-bottom: 0.5rem; }
+  .analogy .a-eq { font-size: 1.02rem; font-weight: 700; color: var(--accent, var(--blue)); margin-bottom: 0.6rem; line-height: 1.35; }
+  .analogy p { font-size: 0.86rem; color: var(--text-muted); }
+
+  /* ---------- TABLES ---------- */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); margin-top: 1.25rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.87rem; min-width: 560px; }
+  thead th { text-align: left; padding: 0.85rem 1rem; background: var(--bg-alt); border-bottom: 1px solid var(--border); font-weight: 700; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-muted); position: sticky; top: 0; }
+  tbody td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border-soft); color: var(--text-muted); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: rgba(88,166,255,0.04); }
+  tbody td strong { color: var(--text); font-weight: 650; }
+  td .dotc { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 0.45rem; vertical-align: middle; }
+
+  /* ---------- CHEAT SHEET / TAKEAWAYS ---------- */
+  .takeaways { counter-reset: tk; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.9rem; margin-top: 1rem; }
+  @media (max-width: 760px){ .takeaways { grid-template-columns: 1fr; } }
+  .tk { counter-increment: tk; background: var(--bg-card); border: 1px solid var(--border); border-radius: 11px; padding: 1.1rem 1.2rem 1.1rem 3.2rem; position: relative; font-size: 0.9rem; color: var(--text-muted); }
+  .tk::before { content: counter(tk); position: absolute; left: 1rem; top: 1rem; width: 26px; height: 26px; border-radius: 7px; background: var(--grad-hero); color: #04101f; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; }
+  .tk strong { color: var(--text); }
+
+  .cheat { background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.6rem; margin-top: 1.5rem; }
+  .cheat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  @media (max-width: 860px){ .cheat-grid { grid-template-columns: 1fr; } }
+  .cheat-col h4 { font-size: 0.9rem; font-weight: 750; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem; }
+  .cheat-col ul { list-style: none; display: grid; gap: 0.4rem; }
+  .cheat-col li { font-size: 0.83rem; color: var(--text-muted); padding-left: 1rem; position: relative; }
+  .cheat-col li::before { content: '▸'; position: absolute; left: 0; color: var(--accent, var(--blue)); }
+
+  /* ---------- GLOSSARY ---------- */
+  .glossary { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-top: 1.25rem; }
+  @media (max-width: 760px){ .glossary { grid-template-columns: 1fr; } }
+  .gterm { background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 10px; padding: 0.9rem 1.1rem; }
+  .gterm dt { font-weight: 720; font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .gterm dd { font-size: 0.83rem; color: var(--text-muted); }
+
+  /* ---------- FOOTER ---------- */
+  footer { border-top: 1px solid var(--border); padding: 3rem 1.5rem 3.5rem; text-align: center; color: var(--text-dim); font-size: 0.82rem; margin-top: 2rem; }
+  footer .f-logo { font-weight: 800; margin-bottom: 0.6rem; font-size: 0.95rem; }
+  footer .f-logo .grad { background: var(--grad-github); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  footer a { color: var(--blue); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  footer .f-disclaimer { max-width: 640px; margin: 0.8rem auto 0; }
+
+  /* utility */
+  .center { text-align: center; }
+  .mt-lg { margin-top: 2.5rem; }
+  .lead-accent { color: var(--accent, var(--blue)); font-weight: 650; }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce){ .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<nav>
+  <div class="nav-inner">
+    <div class="logo"><span class="mark">⬡</span> <span class="grad">GitHub Platform Guide</span></div>
+    <ul class="nav-links">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#enterprise">Enterprise</a></li>
+      <li><a href="#security">Advanced Security</a></li>
+      <li><a href="#copilot">Copilot</a></li>
+      <li><a href="#sdlc">Lifecycle</a></li>
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#map">Map</a></li>
+      <li><a href="#models">Mental Models</a></li>
+      <li><a href="#tables">Tables</a></li>
+      <li><a href="#takeaways">Takeaways</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> Interactive learning guide · Build the mental model</div>
+    <h1>The GitHub platform,<br><span class="grad">one connected mental model</span></h1>
+    <p class="subtitle">How <strong>GitHub Enterprise</strong>, <strong>Advanced Security</strong>, and <strong>Copilot Business</strong> work on their own — and how they fit together into a single system for building software, from first commit to production and beyond.</p>
+    <div class="hero-cta">
+      <a href="#overview" class="btn btn-primary">Start with the big picture →</a>
+      <a href="#takeaways" class="btn btn-secondary">Jump to the cheat sheet</a>
+    </div>
+    <div class="hero-pillfacts">
+      <div class="pf"><b style="color:var(--ent)">🏢 Enterprise</b><span>The platform &amp; governance</span></div>
+      <div class="pf"><b style="color:var(--sec)">🛡️ Advanced Security</b><span>Protection across the SDLC</span></div>
+      <div class="pf"><b style="color:var(--cop)">🤖 Copilot Business</b><span>AI across the workflow</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 1 · EXECUTIVE OVERVIEW ============ -->
+<section id="overview" class="reveal">
+  <div class="section-head">
+    <div class="section-label"><span class="num">01</span> · Executive overview</div>
+    <h2 class="section-title">Three products, one platform</h2>
+    <p class="section-sub">Don't think of these as three separate tools you buy. Think of them as three <strong>layers</strong> of the same system. Each layer sits on top of the one below it and makes it more valuable — the platform holds everything, security wraps around it, and AI accelerates the people using it.</p>
+  </div>
+
+  <div class="pillars">
+    <div class="pillar p-ent">
+      <div class="p-ic">🏢</div>
+      <div class="p-role">The foundation</div>
+      <h3>GitHub Enterprise</h3>
+      <p>Where your code, teams, automation, and governance live. Repositories, organizations, permissions, Actions, Codespaces, Packages, Projects, audit logs and policy — the ground everything else stands on.</p>
+      <div class="p-tagline">“The operating system for software development.”</div>
+    </div>
+    <div class="pillar p-sec">
+      <div class="p-ic">🛡️</div>
+      <div class="p-role">The protection layer</div>
+      <h3>GitHub Advanced Security</h3>
+      <p>Security woven directly into the same place developers already work. It scans code, catches leaked secrets, watches your dependencies, and gives security teams a single view of risk — without leaving GitHub.</p>
+      <div class="p-tagline">“A security team continuously inspecting your code.”</div>
+    </div>
+    <div class="pillar p-cop">
+      <div class="p-ic">🤖</div>
+      <div class="p-role">The acceleration layer</div>
+      <h3>GitHub Copilot Business</h3>
+      <p>AI that works alongside every developer — completing code, answering questions, explaining unfamiliar files, drafting tests and docs, reviewing pull requests, and taking on multi-step tasks as an agent.</p>
+      <div class="p-tagline">“An AI pair programmer for every developer.”</div>
+    </div>
+  </div>
+
+  <div class="diagram" role="img" aria-label="Layered diagram: GitHub Enterprise is the base platform. Advanced Security wraps around it as a protection layer. Copilot Business accelerates the developers working on top.">
+    <svg viewBox="0 0 860 430" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, Segoe UI, sans-serif">
+      <defs>
+        <linearGradient id="gEnt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#388bfd"/><stop offset="1" stop-color="#58a6ff"/></linearGradient>
+        <linearGradient id="gSec" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2ea043"/><stop offset="1" stop-color="#56d364"/></linearGradient>
+        <linearGradient id="gCop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bc8cff"/><stop offset="1" stop-color="#f778ba"/></linearGradient>
+      </defs>
+
+      <!-- Copilot accelerates (top, people) -->
+      <text x="430" y="34" fill="#bc8cff" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1">🤖 COPILOT BUSINESS — accelerates the people</text>
+      <g>
+        <circle cx="250" cy="70" r="16" fill="#161b22" stroke="#bc8cff" stroke-width="2"/><text x="250" y="76" font-size="16" text-anchor="middle">👩‍💻</text>
+        <circle cx="360" cy="70" r="16" fill="#161b22" stroke="#bc8cff" stroke-width="2"/><text x="360" y="76" font-size="16" text-anchor="middle">👨‍💻</text>
+        <circle cx="470" cy="70" r="16" fill="#161b22" stroke="#bc8cff" stroke-width="2"/><text x="470" y="76" font-size="16" text-anchor="middle">🧑‍💻</text>
+        <circle cx="580" cy="70" r="16" fill="#161b22" stroke="#bc8cff" stroke-width="2"/><text x="580" y="76" font-size="16" text-anchor="middle">👩‍🔧</text>
+      </g>
+
+      <!-- Security wrapper -->
+      <rect x="70" y="110" width="720" height="250" rx="20" fill="none" stroke="url(#gSec)" stroke-width="2" stroke-dasharray="7 6"/>
+      <rect x="70" y="110" width="248" height="30" rx="8" fill="#0d1117"/>
+      <text x="86" y="130" fill="#56d364" font-size="12.5" font-weight="700">🛡️ ADVANCED SECURITY — wraps everything</text>
+
+      <!-- Enterprise foundation -->
+      <rect x="110" y="160" width="640" height="170" rx="16" fill="url(#gEnt)" opacity="0.14" stroke="#58a6ff" stroke-width="1.5"/>
+      <text x="430" y="188" fill="#58a6ff" font-size="13" font-weight="800" text-anchor="middle" letter-spacing="0.5">🏢 GITHUB ENTERPRISE — the foundation</text>
+
+      <!-- foundation building blocks -->
+      <g font-size="11" fill="#e6edf3" text-anchor="middle">
+        <rect x="135" y="205" width="110" height="46" rx="9" fill="#161b22" stroke="#30363d"/><text x="190" y="226">📦 Repositories</text><text x="190" y="240" fill="#8b949e" font-size="9.5">code &amp; history</text>
+        <rect x="258" y="205" width="110" height="46" rx="9" fill="#161b22" stroke="#30363d"/><text x="313" y="226">⚙️ Actions</text><text x="313" y="240" fill="#8b949e" font-size="9.5">CI/CD</text>
+        <rect x="381" y="205" width="110" height="46" rx="9" fill="#161b22" stroke="#30363d"/><text x="436" y="226">👥 Orgs &amp; Teams</text><text x="436" y="240" fill="#8b949e" font-size="9.5">permissions</text>
+        <rect x="504" y="205" width="110" height="46" rx="9" fill="#161b22" stroke="#30363d"/><text x="559" y="226">💻 Codespaces</text><text x="559" y="240" fill="#8b949e" font-size="9.5">dev envs</text>
+        <rect x="627" y="205" width="100" height="46" rx="9" fill="#161b22" stroke="#30363d"/><text x="677" y="226">📊 Projects</text><text x="677" y="240" fill="#8b949e" font-size="9.5">planning</text>
+
+        <rect x="196" y="264" width="120" height="46" rx="9" fill="#161b22" stroke="#30363d"/><text x="256" y="285">🔀 Pull Requests</text><text x="256" y="299" fill="#8b949e" font-size="9.5">review &amp; merge</text>
+        <rect x="329" y="264" width="120" height="46" rx="9" fill="#161b22" stroke="#30363d"/><text x="389" y="285">📋 Audit &amp; Policy</text><text x="389" y="299" fill="#8b949e" font-size="9.5">governance</text>
+        <rect x="462" y="264" width="120" height="46" rx="9" fill="#161b22" stroke="#30363d"/><text x="522" y="285">📦 Packages</text><text x="522" y="299" fill="#8b949e" font-size="9.5">artifacts</text>
+      </g>
+
+      <!-- arrows from copilot to platform -->
+      <g stroke="#bc8cff" stroke-width="1.6" opacity="0.55" marker-end="url(#ah)">
+        <line x1="250" y1="88" x2="250" y2="158"/>
+        <line x1="470" y1="88" x2="430" y2="158"/>
+        <line x1="580" y1="88" x2="600" y2="158"/>
+      </g>
+      <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#bc8cff"/></marker></defs>
+
+      <text x="430" y="392" fill="#8b949e" font-size="12" text-anchor="middle">Developers build on the <tspan fill="#58a6ff">platform</tspan>, Copilot <tspan fill="#bc8cff">accelerates</tspan> them, and Advanced Security <tspan fill="#56d364">protects</tspan> every layer.</text>
+    </svg>
+    <div class="dg-cap">How the three layers stack: the platform holds your work, security surrounds it, and AI speeds up the people on top.</div>
+  </div>
+
+  <div class="grid cols-3 mt-lg">
+    <div class="callout info" style="margin:0"><div class="co-ic">🧩</div><div><h4>They share one home</h4><p>All three live in the same place. Security findings appear on the same pull request Copilot helped you write — no context-switching between tools.</p></div></div>
+    <div class="callout tip" style="margin:0"><div class="co-ic">🔁</div><div><h4>They reinforce each other</h4><p>Copilot can help <em>fix</em> the vulnerabilities Advanced Security finds, inside the workflow Enterprise governs. The loop closes itself.</p></div></div>
+    <div class="callout key" style="margin:0"><div class="co-ic">📈</div><div><h4>Value compounds</h4><p>Enterprise alone is powerful. Add security and you ship safer. Add Copilot and you ship faster and safer — the whole is greater than the parts.</p></div></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ============ 2 · GITHUB ENTERPRISE ============ -->
+<section id="enterprise" class="p-ent reveal">
+  <div class="section-head">
+    <div class="section-label"><span class="num">02</span> · The foundation</div>
+    <h2 class="section-title">GitHub Enterprise</h2>
+    <p class="section-sub"><strong>What it is:</strong> the enterprise-grade version of GitHub — the platform where an entire organization's code, collaboration, automation, and governance live under one roof. <strong>Why it exists:</strong> a single developer needs a repo; a 5,000-person company needs identity, permissions, policy, auditability, and scale. Enterprise turns "GitHub" into something a large regulated organization can safely run its whole engineering function on.</p>
+  </div>
+
+  <div class="callout key"><div class="co-ic">🧠</div><div><h4>The one idea to hold onto</h4><p>Everything below is really answering three organizational questions: <strong>Where does the work live?</strong> (repos, packages, projects) · <strong>Who can do what?</strong> (orgs, teams, permissions, EMU) · <strong>How do we stay in control?</strong> (policies, audit logs, governance). Automation (Actions) and environments (Codespaces) sit on top of that.</p></div></div>
+
+  <div class="grid cols-3 auto-fit">
+    <div class="card"><div class="ic">📦</div><h3>Repository management</h3><p>The core unit: a repo holds your code, full history, issues, and settings. Enterprise adds branch protection, rulesets, required reviews, and CODEOWNERS so critical code can't change without the right eyes on it.</p></div>
+    <div class="card"><div class="ic">👥</div><h3>Organizations &amp; teams</h3><p>An <strong>organization</strong> groups repos and people; <strong>teams</strong> mirror your real reporting structure. Grant access to a team once and every member inherits it — nested teams cascade permissions down.</p></div>
+    <div class="card"><div class="ic">🔑</div><h3>Permissions &amp; access control</h3><p>Role-based access from read → triage → write → maintain → admin, at repo, team, org, and enterprise levels. The principle: give the least access needed, managed at the team level, not per person.</p></div>
+    <div class="card"><div class="ic">🪪</div><h3>Enterprise Managed Users (EMU)</h3><p>User accounts are created and fully controlled by your identity provider (Entra ID, Okta). Employees sign in with corporate SSO; accounts are provisioned/deprovisioned automatically and can't reach the public GitHub outside your enterprise.</p></div>
+    <div class="card"><div class="ic">☁️</div><h3>Cloud vs Server</h3><p><strong>Enterprise Cloud</strong> is GitHub-hosted (github.com or a dedicated data-residency instance) — always up to date, least ops. <strong>Enterprise Server</strong> runs in your own datacenter for maximum control. Same core product, different hosting model.</p></div>
+    <div class="card"><div class="ic">📋</div><h3>Policies &amp; governance</h3><p>Enterprise-wide guardrails: which Actions can run, whether repos can be public, 2FA enforcement, allowed IPs, base permissions. Set the rules once at the top and they apply to every org beneath.</p></div>
+    <div class="card"><div class="ic">🧾</div><h3>Audit logs</h3><p>An immutable record of <em>who did what, when</em> across the enterprise — permission changes, secret access, setting edits. The backbone of compliance (SOC 2, ISO) and incident investigation; streamable to your SIEM.</p></div>
+    <div class="card"><div class="ic">⚙️</div><h3>Actions (CI/CD)</h3><p>Built-in automation triggered by events (push, PR, schedule). Build, test, and deploy in workflows defined as YAML in the repo. Enterprise adds runner governance, larger/self-hosted runners, and org-level reuse.</p></div>
+    <div class="card"><div class="ic">💻</div><h3>Codespaces</h3><p>Full, ready-to-code dev environments in the cloud, defined in the repo and launched in seconds. New hires are productive on day one; environments are consistent, disposable, and centrally governed.</p></div>
+    <div class="card"><div class="ic">📥</div><h3>Packages</h3><p>A private registry for the artifacts you produce — npm, Maven, NuGet, containers, and more — living next to the code that builds them, with the same permission model.</p></div>
+    <div class="card"><div class="ic">📊</div><h3>Projects</h3><p>Flexible planning boards, tables, and roadmaps linked directly to issues and pull requests. Work status updates itself as the underlying code moves, so plans reflect reality.</p></div>
+    <div class="card"><div class="ic">🔌</div><h3>Integrations</h3><p>A vast marketplace plus a REST/GraphQL API and webhooks connect GitHub to Jira, Slack, Teams, ServiceNow, cloud providers and internal tools — so GitHub becomes the hub, not an island.</p></div>
+  </div>
+
+  <div class="callout info mt-lg"><div class="co-ic">🏢</div><div><h4>How this fits a real enterprise organization</h4><p>Picture a bank with 3,000 engineers. <strong>EMU + SSO</strong> means every developer signs in with their corporate identity and loses access automatically the day they leave. <strong>Orgs and teams</strong> mirror the payments, lending, and mobile departments. <strong>Rulesets and CODEOWNERS</strong> ensure no change to payment code merges without two senior reviews. <strong>Actions</strong> runs the pipelines, <strong>Codespaces</strong> gives every dev an identical environment, <strong>Packages</strong> stores internal libraries, <strong>Projects</strong> tracks delivery, and <strong>audit logs</strong> give auditors the evidence trail they require — all in one governed platform.</p></div></div>
+</section>
+<div class="divider"></div>
+
+<!-- ============ 3 · ADVANCED SECURITY ============ -->
+<section id="security" class="band p-sec">
+<div class="band-inner reveal">
+  <div class="section-head">
+    <div class="section-label"><span class="num">03</span> · The protection layer</div>
+    <h2 class="section-title">GitHub Advanced Security</h2>
+    <p class="section-sub"><strong>The core idea:</strong> the cheapest bug to fix is the one caught before it merges. Advanced Security (GHAS) moves security <em>left</em> — into the pull request, right where developers already work — instead of leaving it to a scan weeks later or a pen-test before release. Below, each capability is broken down the same way: <em>what it does, why it matters, when you use it, the problem it solves,</em> and <em>a real example.</em></p>
+  </div>
+
+  <div class="grid cols-3 auto-fit">
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🔍</div><h3>Code Scanning</h3><div class="fc-kicker">Find bugs in your own code</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Automatically analyzes your source for security flaws (SQL injection, XSS, path traversal) as code changes.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Vulnerabilities caught in a PR are cheap; the same flaw in production is a breach.</span></div>
+        <div class="frow"><span class="flabel">When</span><span class="fval">On every push and pull request, automatically.</span></div>
+        <div class="frow"><span class="flabel">Solves</span><span class="fval">"We didn't know that code was insecure until it was already live."</span></div>
+        <div class="frow ex"><span class="flabel">Example</span><span class="fval">A dev builds a search box using string concatenation. Code scanning flags a SQL-injection risk on the PR before a human reviewer ever sees it.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🔑</div><h3>Secret Scanning</h3><div class="fc-kicker">Catch leaked credentials</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Detects API keys, tokens, and passwords committed to repos — and <strong>push protection</strong> can block them before they land.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">A single leaked cloud key can cost a fortune or expose customer data within minutes.</span></div>
+        <div class="frow"><span class="flabel">When</span><span class="fval">At push time and continuously across history.</span></div>
+        <div class="frow"><span class="flabel">Solves</span><span class="fval">"Someone accidentally committed the production AWS key."</span></div>
+        <div class="frow ex"><span class="flabel">Example</span><span class="fval">A dev pastes an AWS secret into a config file and pushes. Push protection rejects the push instantly and tells them exactly which line to remove.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">📥</div><h3>Dependency Review</h3><div class="fc-kicker">Vet new dependencies</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Shows, right in the pull request, which dependencies a change adds/updates and whether any carry known vulnerabilities or risky licenses.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Most modern code is other people's code — a bad dependency is your problem the moment you add it.</span></div>
+        <div class="frow"><span class="flabel">When</span><span class="fval">During code review, before you merge.</span></div>
+        <div class="frow"><span class="flabel">Solves</span><span class="fval">"We pulled in a library that quietly introduced a critical CVE."</span></div>
+        <div class="frow ex"><span class="flabel">Example</span><span class="fval">A PR bumps a package to a version with a known high-severity CVE. The review tab flags it red, so the reviewer asks for a safe version before approving.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🤖</div><h3>Dependabot</h3><div class="fc-kicker">Keep dependencies patched</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Watches your dependencies for vulnerabilities and opens automated pull requests that bump them to fixed versions.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Staying patched is tedious and easy to forget; Dependabot never forgets.</span></div>
+        <div class="frow"><span class="flabel">When</span><span class="fval">Continuously in the background, and the moment a new advisory drops.</span></div>
+        <div class="frow"><span class="flabel">Solves</span><span class="fval">"We were breached through a known bug that a patch had existed for."</span></div>
+        <div class="frow ex"><span class="flabel">Example</span><span class="fval">A new advisory lands for a logging library. Overnight, Dependabot opens a PR upgrading it and links the release notes — the team just reviews and merges.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">📊</div><h3>Security Overview</h3><div class="fc-kicker">See all risk in one place</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">An org- and enterprise-wide dashboard aggregating every alert — code, secret, and dependency — across all repositories.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Security teams need the big picture, not one repo at a time.</span></div>
+        <div class="frow"><span class="flabel">When</span><span class="fval">For reporting, prioritization, and tracking risk trends over time.</span></div>
+        <div class="frow"><span class="flabel">Solves</span><span class="fval">"We have no idea what our overall security posture actually is."</span></div>
+        <div class="frow ex"><span class="flabel">Example</span><span class="fval">A security lead opens the overview, sorts by severity, and sees that 12 repos share the same critical alert — so they fix the root cause once.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">📣</div><h3>Security Campaigns</h3><div class="fc-kicker">Drive fixes at scale</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Lets security teams bundle a set of related alerts and hand them to the right dev teams as a tracked, coordinated remediation effort.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Finding problems is easy; getting hundreds of them actually fixed across many teams is the hard part.</span></div>
+        <div class="frow"><span class="flabel">When</span><span class="fval">During a coordinated push to clear a class of vulnerabilities.</span></div>
+        <div class="frow"><span class="flabel">Solves</span><span class="fval">"Alerts pile up but nobody owns fixing them."</span></div>
+        <div class="frow ex"><span class="flabel">Example</span><span class="fval">A campaign groups every instance of a risky pattern and routes each to its owning team with context — often with Copilot Autofix suggestions attached.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🔗</div><h3>Supply Chain Security</h3><div class="fc-kicker">Trust what you ship</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">The umbrella over your software supply chain — the dependency graph, advisory database, SBOMs, and artifact/build provenance (attestations).</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Attackers increasingly target dependencies and build pipelines, not just your code.</span></div>
+        <div class="frow"><span class="flabel">When</span><span class="fval">Whenever you need to prove <em>what's inside</em> and <em>where it came from</em>.</span></div>
+        <div class="frow"><span class="flabel">Solves</span><span class="fval">"A customer/regulator asked for an SBOM and we couldn't produce one."</span></div>
+        <div class="frow ex"><span class="flabel">Example</span><span class="fval">Before a release, the team exports an SBOM listing every component and generates build attestations proving the binary came from trusted CI.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🧬</div><h3>CodeQL</h3><div class="fc-kicker">The engine behind code scanning</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">GitHub's semantic analysis engine that treats your code as a queryable database, tracing how untrusted data flows through it to find deep vulnerabilities.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Simple pattern-matching misses real bugs; CodeQL follows data <em>across functions and files</em>.</span></div>
+        <div class="frow"><span class="flabel">When</span><span class="fval">Powers code scanning by default; security engineers can also write custom queries.</span></div>
+        <div class="frow"><span class="flabel">Solves</span><span class="fval">"Our old scanner drowned us in false positives and missed the real ones."</span></div>
+        <div class="frow ex"><span class="flabel">Example</span><span class="fval">CodeQL traces user input from an HTTP handler, through three helper functions, into a database call — and flags the injection a regex would never catch.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🛠️</div><h3>Vulnerability Management</h3><div class="fc-kicker">From alert to closed</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">The lifecycle around every alert: triage, prioritize by severity, assign, track, dismiss with a reason, and verify the fix — often accelerated by <strong>Copilot Autofix</strong>.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">A finding nobody acts on is just noise; the value is in closing the loop.</span></div>
+        <div class="frow"><span class="flabel">When</span><span class="fval">Every day, as alerts arrive and get worked down.</span></div>
+        <div class="frow"><span class="flabel">Solves</span><span class="fval">"We find vulnerabilities but can't tell which matter or whether they're fixed."</span></div>
+        <div class="frow ex"><span class="flabel">Example</span><span class="fval">A critical alert appears; Autofix proposes a patch as a PR, a reviewer approves it, and the alert auto-closes once the fix merges — fully tracked.</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout tip mt-lg"><div class="co-ic">💡</div><div><h4>The through-line</h4><p>Notice the pattern: GHAS meets developers <strong>where they already are</strong> — in commits, pushes, and pull requests — and gives security teams a <strong>single pane of glass</strong> above it. Detection (scanning) + prevention (push protection) + remediation (Dependabot, Autofix) + visibility (overview) = security that keeps pace with development instead of blocking it.</p></div></div>
+</div>
+</section>
+
+<!-- ============ 4 · COPILOT BUSINESS ============ -->
+<section id="copilot" class="p-cop reveal">
+  <div class="section-head">
+    <div class="section-label"><span class="num">04</span> · The acceleration layer</div>
+    <h2 class="section-title">GitHub Copilot Business</h2>
+    <p class="section-sub"><strong>What it is:</strong> an AI assistant embedded across the developer workflow — in the editor, on GitHub.com, in the CLI, and in pull requests. <strong>Why it matters:</strong> developers spend huge amounts of time on boilerplate, context-gathering, and understanding unfamiliar code. Copilot compresses that so people spend more time on the hard, creative parts. The <em>Business</em> tier adds org-wide policy, license management, and the guarantee that <strong>your code isn't used to train the models</strong>.</p>
+  </div>
+
+  <div class="callout key"><div class="co-ic">🧠</div><div><h4>The mental model for how Copilot "knows" things</h4><p>Copilot is only as good as its <strong>context</strong> — the information it can see when it answers. That context is assembled from your open files, the surrounding code, the repository, and what you explicitly point it at. Everything below is really about <em>giving it better context</em> and <em>choosing the right mode</em> for the task.</p></div></div>
+
+  <div class="grid cols-3 auto-fit">
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">⚡</div><h3>Code Completion</h3><div class="fc-kicker">The original superpower</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Suggests the next line, block, or whole function as you type — grey "ghost text" you accept with Tab.</span></div>
+        <div class="frow"><span class="flabel">How</span><span class="fval">Just keep coding; write a clear function name or comment and let it draft the body.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Removes boilerplate and keeps you in flow instead of reaching for docs.</span></div>
+        <div class="frow"><span class="flabel">Where</span><span class="fval">In the editor, during the <span class="chip cop">Coding</span> phase.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">💬</div><h3>Chat</h3><div class="fc-kicker">Ask your codebase anything</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">A conversational assistant that answers questions, generates code, and explains errors in natural language.</span></div>
+        <div class="frow"><span class="flabel">How</span><span class="fval">Ask "why does this test fail?" or "write a function that…"; reference files with #.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Turns "search Stack Overflow and hope" into a direct answer grounded in your code.</span></div>
+        <div class="frow"><span class="flabel">Where</span><span class="fval">Editor, GitHub.com, mobile, CLI — throughout the workflow.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🎯</div><h3>Agent Mode</h3><div class="fc-kicker">From suggestion to action</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Copilot takes a high-level goal and executes multi-step work itself — editing across files, running commands, and iterating until done.</span></div>
+        <div class="frow"><span class="flabel">How</span><span class="fval">Give it a task ("add pagination to the users API"); it plans, edits, and can even open a PR.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Handles whole tasks, not just lines — you review the result instead of typing every keystroke.</span></div>
+        <div class="frow"><span class="flabel">Where</span><span class="fval">Editor and GitHub, for larger <span class="chip cop">Coding</span> tasks and issues.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🧩</div><h3>AI Context</h3><div class="fc-kicker">Why answers are relevant</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">The information Copilot gathers to ground a response: open tabs, nearby code, the repo, and anything you attach.</span></div>
+        <div class="frow"><span class="flabel">How</span><span class="fval">Keep relevant files open and attach the right ones; better context = better answers.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">It's the difference between a generic snippet and one that fits <em>your</em> conventions.</span></div>
+        <div class="frow"><span class="flabel">Where</span><span class="fval">Underpins every other feature on this page.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">📖</div><h3>Code Explanation</h3><div class="fc-kicker">Understand fast</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Plain-language walkthroughs of what a file, function, or regex actually does.</span></div>
+        <div class="frow"><span class="flabel">How</span><span class="fval">Select code and ask "explain this"; great for legacy or unfamiliar areas.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Onboarding and code archaeology go from days to minutes.</span></div>
+        <div class="frow"><span class="flabel">Where</span><span class="fval">Any time you meet new code — <span class="chip cop">Coding</span> &amp; <span class="chip cop">Review</span>.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🔀</div><h3>Pull Request Assistance</h3><div class="fc-kicker">Better PRs, faster review</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Drafts PR descriptions from the diff and provides an AI reviewer that comments on changes and suggests fixes.</span></div>
+        <div class="frow"><span class="flabel">How</span><span class="fval">Open a PR and let Copilot summarize it / request a Copilot review.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Clearer PRs and a first-pass review mean humans focus on what matters.</span></div>
+        <div class="frow"><span class="flabel">Where</span><span class="fval">The <span class="chip cop">Review</span> phase, on GitHub.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">📝</div><h3>Documentation Generation</h3><div class="fc-kicker">Docs that keep up</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Generates docstrings, READMEs, and inline comments from the code itself.</span></div>
+        <div class="frow"><span class="flabel">How</span><span class="fval">Ask Copilot to "document this function/module."</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Docs are the first thing skipped under deadline; Copilot removes the excuse.</span></div>
+        <div class="frow"><span class="flabel">Where</span><span class="fval"><span class="chip cop">Coding</span> and before <span class="chip cop">Review</span>.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🧪</div><h3>Test Generation</h3><div class="fc-kicker">Coverage without the grind</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Writes unit tests, including edge cases you might not think of, in your existing test framework.</span></div>
+        <div class="frow"><span class="flabel">How</span><span class="fval">Select a function and ask "write tests for this."</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">More coverage, less tedium — and tests double as living documentation.</span></div>
+        <div class="frow"><span class="flabel">Where</span><span class="fval">The <span class="chip cop">Testing</span> phase.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🗂️</div><h3>Workspace Context</h3><div class="fc-kicker">Reason over the whole repo</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Lets Chat consider the entire project, not just the open file, so it can answer "where is X handled?" across the codebase.</span></div>
+        <div class="frow"><span class="flabel">How</span><span class="fval">Use repo/workspace-wide chat and ask architecture-level questions.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Real questions span many files; whole-repo awareness makes answers trustworthy.</span></div>
+        <div class="frow"><span class="flabel">Where</span><span class="fval">Planning, debugging, and onboarding.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🔌</div><h3>Extensions</h3><div class="fc-kicker">Connect your tools</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Bring third-party and internal systems (Jira, Datadog, Sentry, your own APIs) into Copilot Chat so it can act with that context.</span></div>
+        <div class="frow"><span class="flabel">How</span><span class="fval">Install/build extensions; ask Copilot to pull an incident or ticket inline.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Copilot becomes a hub across your whole toolchain, not just the editor.</span></div>
+        <div class="frow"><span class="flabel">Where</span><span class="fval">Across the workflow, wherever you use Chat.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">🧠</div><h3>Models</h3><div class="fc-kicker">Pick the right brain</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Copilot offers a choice of underlying AI models, each with different strengths in speed, reasoning depth, or cost.</span></div>
+        <div class="frow"><span class="flabel">How</span><span class="fval">Switch models in Chat — a fast one for quick edits, a deeper one for tricky reasoning.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Matching the model to the task balances quality against speed and spend.</span></div>
+        <div class="frow"><span class="flabel">Where</span><span class="fval">Any Chat or agent interaction.</span></div>
+      </div>
+    </div>
+
+    <div class="fcard">
+      <div class="fc-head"><div class="fc-ic">📄</div><h3>Prompt Files</h3><div class="fc-kicker">Reusable, shared instructions</div></div>
+      <div class="fc-body">
+        <div class="frow"><span class="flabel">What</span><span class="fval">Version-controlled files (e.g. custom instructions / <code>.prompt</code> files) that encode standing guidance — coding standards, preferred patterns, task templates.</span></div>
+        <div class="frow"><span class="flabel">How</span><span class="fval">Commit them to the repo so every teammate's Copilot follows the same rules.</span></div>
+        <div class="frow"><span class="flabel">Why</span><span class="fval">Turns "prompt engineering" into a team asset instead of tribal knowledge.</span></div>
+        <div class="frow"><span class="flabel">Where</span><span class="fval">Set once, applied across all <span class="chip cop">Coding</span> work.</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout info mt-lg"><div class="co-ic">🚀</div><div><h4>Where Copilot pays off in the workflow</h4><p>Read the "Where" line on each card and a shape appears: Copilot isn't one feature at one moment — it threads through <strong>planning</strong> (workspace questions), <strong>coding</strong> (completion, agent mode, docs), <strong>testing</strong> (test generation), and <strong>review</strong> (PR summaries and AI review). The productivity gain isn't just typing speed; it's spending less time <em>stuck</em> — understanding, searching, and context-switching.</p></div></div>
+</section>
+<div class="divider"></div>
+
+<!-- ============ 5 · SDLC TIMELINE ============ -->
+<section id="sdlc" class="band">
+<div class="band-inner reveal">
+  <div class="section-head">
+    <div class="section-label"><span class="num">05</span> · The software development lifecycle</div>
+    <h2 class="section-title">Where each product shows up</h2>
+    <p class="section-sub">The clearest way to see how the three products cooperate is to walk the lifecycle end to end. At every phase, the <span class="chip ent">platform</span> provides the surface, <span class="chip cop">Copilot</span> accelerates the humans, and <span class="chip sec">Advanced Security</span> guards the gate.</p>
+  </div>
+  <div class="scroll-hint">↔ scroll to follow the lifecycle</div>
+  <div class="timeline">
+
+    <div class="tphase">
+      <div class="t-dot">🧭</div>
+      <div class="t-name">Planning</div><div class="t-idx">Phase 01</div>
+      <div class="t-block">
+        <div class="tb-row"><span class="tb-lab">Platform</span><span class="tb-val"><span class="chip ent">Issues</span><span class="chip ent">Projects</span></span></div>
+        <div class="tb-row"><span class="tb-lab">Copilot</span><span class="tb-val">Answers "how does X work?" over the whole repo to scope the work.</span></div>
+        <div class="tb-row"><span class="tb-lab">Security</span><span class="tb-val">Threat/risk context informs what to build safely.</span></div>
+      </div>
+    </div>
+
+    <div class="tphase">
+      <div class="t-dot">⌨️</div>
+      <div class="t-name">Coding</div><div class="t-idx">Phase 02</div>
+      <div class="t-block">
+        <div class="tb-row"><span class="tb-lab">Platform</span><span class="tb-val"><span class="chip ent">Repos</span><span class="chip ent">Codespaces</span></span></div>
+        <div class="tb-row"><span class="tb-lab">Copilot</span><span class="tb-val"><span class="chip cop">Completion</span><span class="chip cop">Chat</span><span class="chip cop">Agent</span> draft and explain code.</span></div>
+        <div class="tb-row"><span class="tb-lab">Security</span><span class="tb-val"><span class="chip sec">Push protection</span> blocks secrets before commit.</span></div>
+      </div>
+    </div>
+
+    <div class="tphase">
+      <div class="t-dot">🧪</div>
+      <div class="t-name">Testing</div><div class="t-idx">Phase 03</div>
+      <div class="t-block">
+        <div class="tb-row"><span class="tb-lab">Platform</span><span class="tb-val"><span class="chip ent">Actions</span> run the test suite.</span></div>
+        <div class="tb-row"><span class="tb-lab">Copilot</span><span class="tb-val"><span class="chip cop">Test generation</span> writes unit tests &amp; edge cases.</span></div>
+        <div class="tb-row"><span class="tb-lab">Security</span><span class="tb-val"><span class="chip sec">Code scanning</span> runs as a check.</span></div>
+      </div>
+    </div>
+
+    <div class="tphase">
+      <div class="t-dot">🛡️</div>
+      <div class="t-name">Security</div><div class="t-idx">Phase 04</div>
+      <div class="t-block">
+        <div class="tb-row"><span class="tb-lab">Platform</span><span class="tb-val"><span class="chip ent">Checks</span> gate the merge.</span></div>
+        <div class="tb-row"><span class="tb-lab">Copilot</span><span class="tb-val"><span class="chip cop">Autofix</span> proposes patches for findings.</span></div>
+        <div class="tb-row"><span class="tb-lab">Security</span><span class="tb-val"><span class="chip sec">CodeQL</span><span class="chip sec">Secret</span><span class="chip sec">Dependency review</span></span></div>
+      </div>
+    </div>
+
+    <div class="tphase">
+      <div class="t-dot">🔀</div>
+      <div class="t-name">Review</div><div class="t-idx">Phase 05</div>
+      <div class="t-block">
+        <div class="tb-row"><span class="tb-lab">Platform</span><span class="tb-val"><span class="chip ent">Pull Requests</span><span class="chip ent">CODEOWNERS</span></span></div>
+        <div class="tb-row"><span class="tb-lab">Copilot</span><span class="tb-val"><span class="chip cop">PR summaries</span><span class="chip cop">AI review</span></span></div>
+        <div class="tb-row"><span class="tb-lab">Security</span><span class="tb-val">Alerts surface inline on the diff.</span></div>
+      </div>
+    </div>
+
+    <div class="tphase">
+      <div class="t-dot">🚀</div>
+      <div class="t-name">Deployment</div><div class="t-idx">Phase 06</div>
+      <div class="t-block">
+        <div class="tb-row"><span class="tb-lab">Platform</span><span class="tb-val"><span class="chip ent">Actions</span><span class="chip ent">Environments</span><span class="chip ent">Packages</span></span></div>
+        <div class="tb-row"><span class="tb-lab">Copilot</span><span class="tb-val">Helps author &amp; debug deployment workflows.</span></div>
+        <div class="tb-row"><span class="tb-lab">Security</span><span class="tb-val"><span class="chip sec">Attestations</span> prove build provenance.</span></div>
+      </div>
+    </div>
+
+    <div class="tphase">
+      <div class="t-dot">📈</div>
+      <div class="t-name">Monitoring</div><div class="t-idx">Phase 07</div>
+      <div class="t-block">
+        <div class="tb-row"><span class="tb-lab">Platform</span><span class="tb-val"><span class="chip ent">Audit logs</span><span class="chip ent">Webhooks</span></span></div>
+        <div class="tb-row"><span class="tb-lab">Copilot</span><span class="tb-val"><span class="chip cop">Extensions</span> pull in alerts &amp; incidents.</span></div>
+        <div class="tb-row"><span class="tb-lab">Security</span><span class="tb-val"><span class="chip sec">Dependabot</span> &amp; <span class="chip sec">Overview</span> track new risk.</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="callout tip"><div class="co-ic">🔄</div><div><h4>It's a loop, not a line</h4><p>Monitoring feeds straight back into planning: a new Dependabot alert or a production incident becomes the next issue. The three products keep this cycle turning continuously — build, protect, accelerate, repeat.</p></div></div>
+</div>
+</section>
+
+<!-- ============ 6 · DEVELOPER JOURNEY ============ -->
+<section id="journey" class="reveal">
+  <div class="section-head">
+    <div class="section-label"><span class="num">06</span> · End-to-end developer journey</div>
+    <h2 class="section-title">One feature, start to finish</h2>
+    <p class="section-sub">Follow a single developer — Maya — shipping one feature. Watch which products light up at each step. This is the abstract lifecycle above made concrete.</p>
+  </div>
+
+  <div class="journey">
+    <div class="jstep"><div class="j-num">1</div>
+      <h4>Create a repository</h4>
+      <p>Maya spins up a repo inside her team's organization. It inherits org policy, base permissions, and branch protection automatically.</p>
+      <div class="j-active"><span class="chip ent">Repositories</span><span class="chip ent">Orgs &amp; Teams</span><span class="chip ent">Rulesets</span></div>
+    </div>
+    <div class="jstep"><div class="j-num">2</div>
+      <h4>Write code</h4>
+      <p>She opens a Codespace — a full environment ready in seconds, identical to every teammate's. No "works on my machine".</p>
+      <div class="j-active"><span class="chip ent">Codespaces</span></div>
+    </div>
+    <div class="jstep"><div class="j-num">3</div>
+      <h4>Use Copilot</h4>
+      <p>Completion drafts boilerplate, Chat explains an unfamiliar module, and Agent Mode scaffolds the new endpoint across several files.</p>
+      <div class="j-active"><span class="chip cop">Completion</span><span class="chip cop">Chat</span><span class="chip cop">Agent Mode</span></div>
+    </div>
+    <div class="jstep"><div class="j-num">4</div>
+      <h4>Run GitHub Actions</h4>
+      <p>On push, a workflow builds the app and runs tests — including the unit tests Copilot generated for the new code.</p>
+      <div class="j-active"><span class="chip ent">Actions</span><span class="chip cop">Test generation</span></div>
+    </div>
+    <div class="jstep"><div class="j-num">5</div>
+      <h4>Open a Pull Request</h4>
+      <p>Copilot drafts the PR description from the diff. The moment she pushes, secret scanning has already confirmed no keys leaked.</p>
+      <div class="j-active"><span class="chip ent">Pull Requests</span><span class="chip cop">PR summary</span><span class="chip sec">Secret scanning</span></div>
+    </div>
+    <div class="jstep"><div class="j-num">6</div>
+      <h4>Perform code review</h4>
+      <p>A CODEOWNERS reviewer is auto-requested. Copilot's AI review leaves a first pass so the human focuses on design, not typos.</p>
+      <div class="j-active"><span class="chip ent">CODEOWNERS</span><span class="chip cop">AI review</span></div>
+    </div>
+    <div class="jstep"><div class="j-num">7</div>
+      <h4>Run security scans</h4>
+      <p>As required checks, CodeQL analyzes the code, dependency review vets new packages — all visible right on the PR.</p>
+      <div class="j-active"><span class="chip sec">CodeQL</span><span class="chip sec">Dependency review</span><span class="chip sec">Code scanning</span></div>
+    </div>
+    <div class="jstep"><div class="j-num">8</div>
+      <h4>Fix vulnerabilities</h4>
+      <p>Code scanning flags an injection risk. Copilot Autofix proposes a patch as a suggestion; Maya reviews and accepts it in one click.</p>
+      <div class="j-active"><span class="chip sec">Vulnerability mgmt</span><span class="chip cop">Autofix</span></div>
+    </div>
+    <div class="jstep"><div class="j-num">9</div>
+      <h4>Merge</h4>
+      <p>All checks green, review approved. Branch protection lets the merge through — the gate did its job silently.</p>
+      <div class="j-active"><span class="chip ent">Branch protection</span><span class="chip ent">Merge queue</span></div>
+    </div>
+    <div class="jstep"><div class="j-num">10</div>
+      <h4>Deploy</h4>
+      <p>A deployment workflow ships to the protected production environment and generates a build attestation proving where the artifact came from.</p>
+      <div class="j-active"><span class="chip ent">Environments</span><span class="chip ent">Packages</span><span class="chip sec">Attestations</span></div>
+    </div>
+    <div class="jstep"><div class="j-num">11</div>
+      <h4>Maintain the application</h4>
+      <p>Weeks later a new CVE hits a dependency. Dependabot opens a fix PR overnight; Security Overview tracks it; the audit log records every step.</p>
+      <div class="j-active"><span class="chip sec">Dependabot</span><span class="chip sec">Security Overview</span><span class="chip ent">Audit logs</span></div>
+    </div>
+  </div>
+
+  <div class="callout key"><div class="co-ic">✨</div><div><h4>The payoff</h4><p>Maya never left GitHub. She moved faster (Copilot), shipped safer (Advanced Security), and her org stayed in control the whole time (Enterprise) — one continuous, governed flow instead of a relay race between disconnected tools.</p></div></div>
+</section>
+<div class="divider"></div>
+
+<!-- ============ 7 · FEATURE RELATIONSHIP MAP ============ -->
+<section id="map" class="band">
+<div class="band-inner reveal">
+  <div class="section-head">
+    <div class="section-label"><span class="num">07</span> · Feature relationship map</div>
+    <h2 class="section-title">How information flows</h2>
+    <p class="section-sub">Zoom out and the platform is really one pipeline of information. Each stage produces something the next consumes — code becomes a build, a build becomes a review, a review becomes a deployment — while Copilot and Advanced Security plug into that flow at every hand-off.</p>
+  </div>
+
+  <div class="diagram" role="img" aria-label="Flow diagram: GitHub Enterprise contains Repositories, which trigger Actions and are assisted by Copilot. Changes become Pull Requests, which Advanced Security scans, and approved changes flow to Deployments. Enterprise governance and audit wrap the whole flow.">
+    <svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, Segoe UI, sans-serif">
+      <defs>
+        <linearGradient id="mEnt" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#388bfd"/><stop offset="1" stop-color="#58a6ff"/></linearGradient>
+        <marker id="mar" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L6.5,3 L0,6 Z" fill="#8b949e"/></marker>
+        <marker id="marC" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L6.5,3 L0,6 Z" fill="#bc8cff"/></marker>
+        <marker id="marS" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L6.5,3 L0,6 Z" fill="#3fb950"/></marker>
+        <style>
+          .node rect { rx:12; }
+          .ntitle { font-size:14px; font-weight:800; fill:#e6edf3; }
+          .nsub { font-size:10.5px; fill:#8b949e; }
+          .flowlab { font-size:10px; fill:#6e7681; font-style:italic; }
+        </style>
+      </defs>
+
+      <!-- Enterprise governance frame -->
+      <rect x="20" y="20" width="860" height="580" rx="20" fill="#58a6ff" opacity="0.05" stroke="#58a6ff" stroke-width="1.5" stroke-dasharray="6 6"/>
+      <rect x="34" y="8" width="360" height="26" rx="8" fill="#0b0f14"/>
+      <text x="48" y="26" fill="#58a6ff" font-size="12.5" font-weight="800">🏢 GITHUB ENTERPRISE · governance · identity · audit</text>
+
+      <!-- Central spine nodes -->
+      <!-- 1 Repositories -->
+      <g class="node"><rect x="345" y="56" width="210" height="56" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+        <text x="450" y="80" text-anchor="middle" class="ntitle">📦 Repositories</text>
+        <text x="450" y="98" text-anchor="middle" class="nsub">code · history · config</text></g>
+
+      <!-- 2 Actions (left) + Copilot (right) branch off repo -->
+      <g class="node"><rect x="120" y="170" width="200" height="56" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+        <text x="220" y="194" text-anchor="middle" class="ntitle">⚙️ Actions</text>
+        <text x="220" y="212" text-anchor="middle" class="nsub">build · test · automate</text></g>
+
+      <g class="node"><rect x="580" y="170" width="200" height="56" fill="#161b22" stroke="#bc8cff" stroke-width="1.5"/>
+        <text x="680" y="194" text-anchor="middle" class="ntitle">🤖 Copilot</text>
+        <text x="680" y="212" text-anchor="middle" class="nsub">assist · generate · agent</text></g>
+
+      <!-- 3 Pull Requests -->
+      <g class="node"><rect x="345" y="284" width="210" height="56" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+        <text x="450" y="308" text-anchor="middle" class="ntitle">🔀 Pull Requests</text>
+        <text x="450" y="326" text-anchor="middle" class="nsub">review · discuss · gate</text></g>
+
+      <!-- 4 Advanced Security -->
+      <g class="node"><rect x="325" y="398" width="250" height="60" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+        <text x="450" y="422" text-anchor="middle" class="ntitle">🛡️ Advanced Security</text>
+        <text x="450" y="440" text-anchor="middle" class="nsub">CodeQL · secret · dependency · Autofix</text></g>
+
+      <!-- 5 Deployments -->
+      <g class="node"><rect x="345" y="512" width="210" height="56" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+        <text x="450" y="536" text-anchor="middle" class="ntitle">🚀 Deployments</text>
+        <text x="450" y="554" text-anchor="middle" class="nsub">environments · attestations</text></g>
+
+      <!-- FLOWS -->
+      <!-- repo -> actions -->
+      <path d="M360,112 Q250,140 235,168" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#mar)"/>
+      <text x="228" y="150" class="flowlab" text-anchor="middle">triggers</text>
+      <!-- repo -> copilot -->
+      <path d="M540,112 Q650,140 668,168" fill="none" stroke="#bc8cff" stroke-width="1.6" marker-end="url(#marC)"/>
+      <text x="672" y="150" class="flowlab" text-anchor="middle">reads context</text>
+      <!-- copilot -> repo (writes code) -->
+      <path d="M600,176 Q500,150 512,114" fill="none" stroke="#bc8cff" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#marC)"/>
+      <text x="560" y="140" class="flowlab" fill="#bc8cff" text-anchor="middle">writes code</text>
+
+      <!-- actions -> PR (checks) -->
+      <path d="M235,226 Q300,270 360,290" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#mar)"/>
+      <text x="270" y="262" class="flowlab" text-anchor="middle">status checks</text>
+      <!-- copilot -> PR (summary/review) -->
+      <path d="M665,226 Q600,270 540,290" fill="none" stroke="#bc8cff" stroke-width="1.6" marker-end="url(#marC)"/>
+      <text x="640" y="262" class="flowlab" fill="#bc8cff" text-anchor="middle">summary · review</text>
+
+      <!-- PR -> Advanced Security -->
+      <path d="M450,340 L450,394" fill="none" stroke="#3fb950" stroke-width="1.8" marker-end="url(#marS)"/>
+      <text x="530" y="372" class="flowlab" fill="#3fb950" text-anchor="middle">scans every change</text>
+      <!-- Advanced Security -> PR (alerts back / autofix) -->
+      <path d="M400,398 Q360,368 380,342" fill="none" stroke="#3fb950" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#marS)"/>
+      <text x="330" y="372" class="flowlab" fill="#3fb950" text-anchor="middle">alerts · Autofix</text>
+
+      <!-- Advanced Security -> Deployments (only safe code) -->
+      <path d="M450,458 L450,508" fill="none" stroke="#8b949e" stroke-width="1.8" marker-end="url(#mar)"/>
+      <text x="545" y="488" class="flowlab" text-anchor="middle">only vetted code ships</text>
+
+      <!-- Deployments -> back to repo (feedback loop) -->
+      <path d="M555,540 Q835,540 835,84 Q835,70 560,74" fill="none" stroke="#6e7681" stroke-width="1.3" stroke-dasharray="5 5" marker-end="url(#mar)"/>
+      <text x="835" y="310" class="flowlab" text-anchor="middle" transform="rotate(90 835 310)">monitoring feeds new work back</text>
+    </svg>
+    <div class="dg-cap">Solid arrows = the main flow of work. Dashed arrows = feedback: Copilot writing code, security returning fixes, and production insight looping back to the repo.</div>
+  </div>
+
+  <div class="grid cols-3 auto-fit mt-lg">
+    <div class="callout info" style="margin:0"><div class="co-ic">➡️</div><div><h4>Everything routes through the PR</h4><p>The pull request is the crossroads: Actions report to it, Copilot summarizes it, Advanced Security scans it, and only when it's green does code flow onward. Master the PR and you understand the platform.</p></div></div>
+    <div class="callout tip" style="margin:0"><div class="co-ic">🔁</div><div><h4>Feedback closes the loop</h4><p>Copilot writes back into repos, security returns fixes into PRs, and deployments surface monitoring signal that becomes the next issue. It's a cycle, not a one-way pipe.</p></div></div>
+    <div class="callout key" style="margin:0"><div class="co-ic">🏢</div><div><h4>Governance wraps it all</h4><p>The dashed Enterprise frame around the whole diagram is the point: identity, permissions, policy, and audit apply to <em>every</em> arrow inside it.</p></div></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ 8 · MENTAL MODELS ============ -->
+<section id="models" class="reveal">
+  <div class="section-head">
+    <div class="section-label"><span class="num">08</span> · Mental models</div>
+    <h2 class="section-title">Analogies that stick</h2>
+    <p class="section-sub">Feature lists fade; analogies last. If you remember nothing else, remember these — they let you reason about any new capability by asking "which part of the analogy is this?"</p>
+  </div>
+
+  <div class="grid cols-3 auto-fit" style="margin-bottom:1.25rem">
+    <div class="analogy p-ent"><div class="a-emoji">🏢</div><div class="a-name">GitHub Enterprise</div><div class="a-eq">= the operating system for software development</div><p>It's the environment everything runs on: it manages "users," "permissions," "storage" (repos), and "processes" (Actions). You don't think about it constantly — but nothing works without it.</p></div>
+    <div class="analogy p-sec"><div class="a-emoji">🛡️</div><div class="a-name">GitHub Advanced Security</div><div class="a-eq">= a security team reviewing every change, 24/7</div><p>Tireless inspectors reading every commit, checking every door for leaked keys, and watching the supply of parts you build with — before anything ships, not after.</p></div>
+    <div class="analogy p-cop"><div class="a-emoji">🤖</div><div class="a-name">GitHub Copilot Business</div><div class="a-eq">= an AI pair programmer beside every developer</div><p>A knowledgeable partner who autocompletes your sentences, explains the unfamiliar, drafts the boring parts, and — in agent mode — takes the wheel for whole tasks while you steer.</p></div>
+  </div>
+
+  <div class="grid cols-4 auto-fit">
+    <div class="analogy p-ent" style="--accent:var(--ent)"><div class="a-emoji">📦</div><div class="a-name">Repository</div><div class="a-eq">= a project's home &amp; memory</div><p>A folder that never forgets — every version of the code and the story of how it got there.</p></div>
+    <div class="analogy p-ent" style="--accent:var(--ent)"><div class="a-emoji">🔀</div><div class="a-name">Pull Request</div><div class="a-eq">= a proposal with a review board</div><p>"Here's my change — approve it before it becomes official." The meeting room where quality is decided.</p></div>
+    <div class="analogy p-ent" style="--accent:var(--ent)"><div class="a-emoji">⚙️</div><div class="a-name">Actions</div><div class="a-eq">= a tireless robot assembly line</div><p>Press the button (push) and the line builds, tests, and ships — the same way, every time.</p></div>
+    <div class="analogy p-ent" style="--accent:var(--ent)"><div class="a-emoji">💻</div><div class="a-name">Codespaces</div><div class="a-eq">= a rental workshop, fully stocked</div><p>Walk in and every tool is already laid out and identical to your colleague's. Leave and it's cleaned up.</p></div>
+
+    <div class="analogy p-sec" style="--accent:var(--sec)"><div class="a-emoji">🔑</div><div class="a-name">Secret Scanning</div><div class="a-eq">= a metal detector at the door</div><p>Catches the credential in your pocket before you walk out with it — push protection stops you at the gate.</p></div>
+    <div class="analogy p-sec" style="--accent:var(--sec)"><div class="a-emoji">🤖</div><div class="a-name">Dependabot</div><div class="a-eq">= a maintenance crew on call</div><p>Notices a part was recalled and shows up with the replacement already in hand — you just say "go ahead."</p></div>
+    <div class="analogy p-sec" style="--accent:var(--sec)"><div class="a-emoji">🧬</div><div class="a-name">CodeQL</div><div class="a-eq">= a detective following the evidence</div><p>Doesn't just spot suspicious words — it traces where the data <em>goes</em>, room by room, to find the real crime.</p></div>
+    <div class="analogy p-sec" style="--accent:var(--sec)"><div class="a-emoji">📊</div><div class="a-name">Security Overview</div><div class="a-eq">= mission control for risk</div><p>One wall of screens showing the health of everything at once, so you fix the biggest fire first.</p></div>
+
+    <div class="analogy p-cop" style="--accent:var(--cop)"><div class="a-emoji">⚡</div><div class="a-name">Code Completion</div><div class="a-eq">= predictive text for code</div><p>Finishes your thought as you type — you accept, tweak, or ignore.</p></div>
+    <div class="analogy p-cop" style="--accent:var(--cop)"><div class="a-emoji">🎯</div><div class="a-name">Agent Mode</div><div class="a-eq">= an intern who does the whole task</div><p>Hand over a goal, not instructions; it plans and executes, then brings the work back for your sign-off.</p></div>
+    <div class="analogy p-cop" style="--accent:var(--cop)"><div class="a-emoji">🧩</div><div class="a-name">AI Context</div><div class="a-eq">= the desk you set for a consultant</div><p>Lay out the right papers and you get sharp advice; hand them nothing and you get generic platitudes.</p></div>
+    <div class="analogy p-cop" style="--accent:var(--cop)"><div class="a-emoji">📄</div><div class="a-name">Prompt Files</div><div class="a-eq">= the team's house style guide</div><p>Written down once so everyone's AI assistant follows the same rules automatically.</p></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ============ 9 · SUMMARY TABLES ============ -->
+<section id="tables" class="band">
+<div class="band-inner reveal">
+  <div class="section-head">
+    <div class="section-label"><span class="num">09</span> · Summary tables</div>
+    <h2 class="section-title">Quick reference</h2>
+    <p class="section-sub">Scannable comparisons for when you need the answer fast rather than the story. High-level and directional — exact packaging and pricing evolve, so confirm specifics in the official docs.</p>
+  </div>
+
+  <h3 style="font-size:1.1rem;font-weight:730;margin:0.5rem 0 0.25rem">Product comparison</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>&nbsp;</th><th><span class="dotc" style="background:var(--ent)"></span>GitHub Enterprise</th><th><span class="dotc" style="background:var(--sec)"></span>Advanced Security</th><th><span class="dotc" style="background:var(--cop)"></span>Copilot Business</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Role</strong></td><td>The platform &amp; foundation</td><td>The protection layer</td><td>The acceleration layer</td></tr>
+        <tr><td><strong>Core question</strong></td><td>Where does work live &amp; who governs it?</td><td>Is what we build safe?</td><td>How do we build faster?</td></tr>
+        <tr><td><strong>Primary users</strong></td><td>Everyone + admins &amp; platform eng</td><td>Security engineers + all developers</td><td>Every developer</td></tr>
+        <tr><td><strong>You feel it most</strong></td><td>Sign-in, permissions, CI/CD, planning</td><td>On the pull request &amp; the dashboard</td><td>In the editor &amp; on GitHub, daily</td></tr>
+        <tr><td><strong>Without it</strong></td><td>No governed home for code at scale</td><td>Risk found late, in production</td><td>Slower, more time stuck &amp; context-switching</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-size:1.1rem;font-weight:730;margin:2rem 0 0.25rem">Feature comparison — what solves what</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Need</th><th>Feature</th><th>Product</th><th>Lifecycle phase</th></tr></thead>
+      <tbody>
+        <tr><td>Automate build &amp; deploy</td><td>Actions</td><td><span class="chip ent">Enterprise</span></td><td>Testing → Deployment</td></tr>
+        <tr><td>Control who can change code</td><td>Rulesets &amp; CODEOWNERS</td><td><span class="chip ent">Enterprise</span></td><td>Review</td></tr>
+        <tr><td>Consistent dev environments</td><td>Codespaces</td><td><span class="chip ent">Enterprise</span></td><td>Coding</td></tr>
+        <tr><td>Find vulns in our code</td><td>Code Scanning / CodeQL</td><td><span class="chip sec">Adv. Security</span></td><td>Security</td></tr>
+        <tr><td>Stop leaked credentials</td><td>Secret Scanning + push protection</td><td><span class="chip sec">Adv. Security</span></td><td>Coding → Security</td></tr>
+        <tr><td>Stay patched automatically</td><td>Dependabot</td><td><span class="chip sec">Adv. Security</span></td><td>Monitoring</td></tr>
+        <tr><td>See risk across all repos</td><td>Security Overview</td><td><span class="chip sec">Adv. Security</span></td><td>Monitoring</td></tr>
+        <tr><td>Write code faster</td><td>Code Completion / Agent Mode</td><td><span class="chip cop">Copilot</span></td><td>Coding</td></tr>
+        <tr><td>Understand unfamiliar code</td><td>Chat / Code Explanation</td><td><span class="chip cop">Copilot</span></td><td>Coding → Review</td></tr>
+        <tr><td>Speed up reviews</td><td>PR summaries &amp; AI review</td><td><span class="chip cop">Copilot</span></td><td>Review</td></tr>
+        <tr><td>Fix a flagged vulnerability</td><td>Copilot Autofix</td><td><span class="chip cop">Copilot</span> + <span class="chip sec">Sec</span></td><td>Security</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-size:1.1rem;font-weight:730;margin:2rem 0 0.25rem">Typical users — who cares about what</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Role</th><th>Lives in</th><th>Leans on most</th></tr></thead>
+      <tbody>
+        <tr><td><strong>👩‍💻 Developer</strong></td><td>Editor, repos, PRs</td><td>Copilot (all), Codespaces, Actions, inline security alerts &amp; Autofix</td></tr>
+        <tr><td><strong>🛡️ Security engineer</strong></td><td>Security Overview, alerts</td><td>Code/Secret scanning, CodeQL, campaigns, supply-chain, vuln management</td></tr>
+        <tr><td><strong>🧰 Platform engineer</strong></td><td>Actions, runners, templates</td><td>Actions governance, Packages, reusable workflows, integrations, EMU plumbing</td></tr>
+        <tr><td><strong>⚙️ Administrator</strong></td><td>Enterprise/org settings</td><td>Policies, EMU/SSO, audit logs, license &amp; access management</td></tr>
+        <tr><td><strong>📊 Engineering manager</strong></td><td>Projects, insights</td><td>Projects/roadmaps, adoption &amp; security dashboards, delivery visibility</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-size:1.1rem;font-weight:730;margin:2rem 0 0.25rem">Licensing overview <span style="font-weight:500;color:var(--text-dim);font-size:0.85rem">(high level — verify specifics)</span></h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Product</th><th>Sold as</th><th>Typically bought by</th><th>Good to know</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chip ent">Enterprise</span></td><td>Per-user (Enterprise Cloud or Server)</td><td>The organization, centrally</td><td>The foundation the other two attach to; includes core platform + governance.</td></tr>
+        <tr><td><span class="chip sec">Advanced Security</span></td><td>Add-on, per active committer; also available in modular SKUs (e.g. Secret Protection, Code Security)</td><td>Security &amp; platform teams</td><td>Applied to the repos/orgs you enable it on; some features (like push protection &amp; the advisory DB) are broadly available.</td></tr>
+        <tr><td><span class="chip cop">Copilot Business</span></td><td>Per-seat subscription; org-managed policy</td><td>Engineering orgs</td><td>Adds admin controls &amp; the guarantee your code isn't used to train models; a higher <em>Enterprise</em> Copilot tier adds deeper platform integration.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout warn"><div class="co-ic">⚠️</div><div><h4>Treat licensing as directional</h4><p>GitHub packages and prices these products differently over time (and offers modular security SKUs). Use this table to understand the <em>shape</em> of licensing — always confirm current terms with your GitHub account team or the official docs before budgeting.</p></div></div>
+</div>
+</section>
+
+<!-- ============ 10 · KEY TAKEAWAYS ============ -->
+<section id="takeaways" class="reveal">
+  <div class="section-head">
+    <div class="section-label"><span class="num">10</span> · Key takeaways</div>
+    <h2 class="section-title">If you remember nothing else</h2>
+    <p class="section-sub">The whole guide, distilled. Read this section on its own any time you want to reload the mental model in two minutes.</p>
+  </div>
+
+  <h3 style="font-size:1.15rem;font-weight:750;margin-bottom:0.5rem">🎯 The 10 most important concepts</h3>
+  <div class="takeaways">
+    <div class="tk"><strong>Three layers, not three tools.</strong> Enterprise is the foundation, Advanced Security wraps it, Copilot accelerates the people on top.</div>
+    <div class="tk"><strong>One home for everything.</strong> Code, CI/CD, planning, security findings, and AI all live in the same place — no tool-hopping.</div>
+    <div class="tk"><strong>The pull request is the crossroads.</strong> Actions, Copilot, and security all meet on the PR; only green changes flow onward.</div>
+    <div class="tk"><strong>Shift left.</strong> Security runs in the PR, not weeks later — the earlier a problem is caught, the cheaper it is to fix.</div>
+    <div class="tk"><strong>Copilot lives on context.</strong> Better inputs (open files, attachments, prompt files) produce better output. Garbage in, garbage out.</div>
+    <div class="tk"><strong>Governance wraps every arrow.</strong> Identity, permissions, policy, and audit apply to the entire flow, all the time.</div>
+    <div class="tk"><strong>Detection needs remediation.</strong> Dependabot and Copilot Autofix turn "we found a problem" into "here's the fix PR."</div>
+    <div class="tk"><strong>Teams &gt; people.</strong> Manage access at the team level so it mirrors your org and scales cleanly.</div>
+    <div class="tk"><strong>It's a loop.</strong> Monitoring feeds planning; production insight becomes the next issue. Build → protect → accelerate → repeat.</div>
+    <div class="tk"><strong>Value compounds.</strong> Each layer multiplies the others — safer <em>and</em> faster beats either one alone.</div>
+  </div>
+
+  <h3 style="font-size:1.15rem;font-weight:750;margin:2.5rem 0 0.5rem">🗒️ One-page cheat sheet</h3>
+  <div class="cheat">
+    <div class="cheat-grid">
+      <div class="cheat-col p-ent" style="--accent:var(--ent)">
+        <h4><span style="color:var(--ent)">🏢</span> Enterprise = platform</h4>
+        <ul>
+          <li>Repos = code + history</li>
+          <li>Orgs/Teams = structure + access</li>
+          <li>EMU + SSO = corporate identity</li>
+          <li>Actions = CI/CD automation</li>
+          <li>Codespaces = instant dev envs</li>
+          <li>Packages = artifact registry</li>
+          <li>Projects = planning</li>
+          <li>Policies + Audit = governance</li>
+        </ul>
+      </div>
+      <div class="cheat-col p-sec" style="--accent:var(--sec)">
+        <h4><span style="color:var(--sec)">🛡️</span> Adv. Security = protection</h4>
+        <ul>
+          <li>Code Scanning / CodeQL = find flaws</li>
+          <li>Secret Scanning = stop leaks</li>
+          <li>Dependency Review = vet packages</li>
+          <li>Dependabot = auto-patch</li>
+          <li>Supply Chain = SBOM + provenance</li>
+          <li>Security Overview = one dashboard</li>
+          <li>Campaigns = fix at scale</li>
+          <li>Vuln mgmt = alert → closed</li>
+        </ul>
+      </div>
+      <div class="cheat-col p-cop" style="--accent:var(--cop)">
+        <h4><span style="color:var(--cop)">🤖</span> Copilot = acceleration</h4>
+        <ul>
+          <li>Completion = draft as you type</li>
+          <li>Chat = ask your codebase</li>
+          <li>Agent Mode = do whole tasks</li>
+          <li>Explanation = understand fast</li>
+          <li>Test + Doc gen = less tedium</li>
+          <li>PR assist = summaries + review</li>
+          <li>Extensions + Models = flexibility</li>
+          <li>Prompt files = shared standards</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:1.15rem;font-weight:750;margin:2.5rem 0 0.5rem">🏗️ How everything fits together</h3>
+  <div class="diagram" role="img" aria-label="Architecture diagram showing GitHub Enterprise as the base platform with identity and governance, Advanced Security as a protection band across the lifecycle, and Copilot as an acceleration band, all serving the developer workflow that produces deployments.">
+    <svg viewBox="0 0 880 400" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, Segoe UI, sans-serif">
+      <defs>
+        <linearGradient id="aEnt" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1f6feb" stop-opacity="0.25"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0.15"/></linearGradient>
+        <linearGradient id="aSec" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#238636" stop-opacity="0.28"/><stop offset="1" stop-color="#3fb950" stop-opacity="0.15"/></linearGradient>
+        <linearGradient id="aCop" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8957e5" stop-opacity="0.28"/><stop offset="1" stop-color="#bc8cff" stop-opacity="0.15"/></linearGradient>
+      </defs>
+
+      <!-- Copilot band (top) -->
+      <rect x="40" y="30" width="800" height="66" rx="12" fill="url(#aCop)" stroke="#bc8cff" stroke-width="1.5"/>
+      <text x="60" y="58" fill="#bc8cff" font-size="13" font-weight="800">🤖 COPILOT — accelerates every step</text>
+      <g font-size="10.5" fill="#e6edf3">
+        <text x="60" y="80">Completion</text><text x="150" y="80">Chat</text><text x="210" y="80">Agent</text><text x="275" y="80">PR review</text><text x="360" y="80">Test/Doc gen</text><text x="480" y="80">Autofix</text><text x="560" y="80">Extensions</text><text x="680" y="80">Workspace context</text>
+      </g>
+
+      <!-- Workflow spine (middle) -->
+      <text x="440" y="122" fill="#8b949e" font-size="11.5" text-anchor="middle" letter-spacing="1">THE DEVELOPER WORKFLOW</text>
+      <g>
+        <rect x="55" y="135" width="120" height="52" rx="10" fill="#161b22" stroke="#58a6ff"/><text x="115" y="160" text-anchor="middle" font-size="11.5" fill="#e6edf3" font-weight="700">📦 Repos</text><text x="115" y="176" text-anchor="middle" font-size="9.5" fill="#8b949e">plan · code</text>
+        <rect x="215" y="135" width="120" height="52" rx="10" fill="#161b22" stroke="#58a6ff"/><text x="275" y="160" text-anchor="middle" font-size="11.5" fill="#e6edf3" font-weight="700">⚙️ Actions</text><text x="275" y="176" text-anchor="middle" font-size="9.5" fill="#8b949e">build · test</text>
+        <rect x="375" y="135" width="130" height="52" rx="10" fill="#161b22" stroke="#58a6ff"/><text x="440" y="160" text-anchor="middle" font-size="11.5" fill="#e6edf3" font-weight="700">🔀 Pull Request</text><text x="440" y="176" text-anchor="middle" font-size="9.5" fill="#8b949e">review · gate</text>
+        <rect x="545" y="135" width="130" height="52" rx="10" fill="#161b22" stroke="#3fb950"/><text x="610" y="160" text-anchor="middle" font-size="11.5" fill="#e6edf3" font-weight="700">🛡️ Security gate</text><text x="610" y="176" text-anchor="middle" font-size="9.5" fill="#8b949e">scan · fix</text>
+        <rect x="715" y="135" width="120" height="52" rx="10" fill="#161b22" stroke="#58a6ff"/><text x="775" y="160" text-anchor="middle" font-size="11.5" fill="#e6edf3" font-weight="700">🚀 Deploy</text><text x="775" y="176" text-anchor="middle" font-size="9.5" fill="#8b949e">ship · monitor</text>
+        <g stroke="#6e7681" stroke-width="1.5" marker-end="url(#aa)">
+          <line x1="175" y1="161" x2="212" y2="161"/><line x1="335" y1="161" x2="372" y2="161"/><line x1="505" y1="161" x2="542" y2="161"/><line x1="675" y1="161" x2="712" y2="161"/>
+        </g>
+        <defs><marker id="aa" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6e7681"/></marker></defs>
+      </g>
+
+      <!-- Security band -->
+      <rect x="40" y="210" width="800" height="60" rx="12" fill="url(#aSec)" stroke="#3fb950" stroke-width="1.5"/>
+      <text x="60" y="236" fill="#3fb950" font-size="13" font-weight="800">🛡️ ADVANCED SECURITY — protects every step</text>
+      <g font-size="10.5" fill="#e6edf3">
+        <text x="60" y="256">Code scanning</text><text x="175" y="256">Secret scanning</text><text x="300" y="256">Dependency review</text><text x="435" y="256">Dependabot</text><text x="535" y="256">CodeQL</text><text x="610" y="256">Supply chain</text><text x="720" y="256">Security Overview</text>
+      </g>
+
+      <!-- Enterprise base -->
+      <rect x="40" y="290" width="800" height="80" rx="14" fill="url(#aEnt)" stroke="#58a6ff" stroke-width="1.6"/>
+      <text x="60" y="318" fill="#58a6ff" font-size="13.5" font-weight="800">🏢 GITHUB ENTERPRISE — the foundation everything runs on</text>
+      <g font-size="10.5" fill="#e6edf3">
+        <text x="60" y="344">Identity (EMU/SSO)</text><text x="205" y="344">Orgs &amp; Teams</text><text x="320" y="344">Permissions</text><text x="425" y="344">Policies</text><text x="510" y="344">Audit logs</text><text x="620" y="344">Codespaces</text><text x="730" y="344">Packages · Projects</text>
+      </g>
+    </svg>
+    <div class="dg-cap">Read bottom-up: the platform holds everything, security protects the whole workflow, and Copilot accelerates it — all serving one flow from repo to deploy.</div>
+  </div>
+
+  <h3 style="font-size:1.15rem;font-weight:750;margin:2.5rem 0 0.5rem">📖 Glossary</h3>
+  <div class="glossary">
+    <dl class="gterm"><dt>Repository (repo)</dt><dd>A project's container — its code, full version history, issues, and settings.</dd></dl>
+    <dl class="gterm"><dt>Organization</dt><dd>A shared account that groups repositories, people, and teams under one entity.</dd></dl>
+    <dl class="gterm"><dt>Team</dt><dd>A group of members inside an org used to assign access in bulk; can be nested.</dd></dl>
+    <dl class="gterm"><dt>Enterprise Managed User (EMU)</dt><dd>A GitHub account created and controlled by your company's identity provider via SSO.</dd></dl>
+    <dl class="gterm"><dt>Pull Request (PR)</dt><dd>A proposal to merge changes, with review, discussion, checks, and approval.</dd></dl>
+    <dl class="gterm"><dt>Branch protection / Ruleset</dt><dd>Rules that gate changes to important branches (required reviews, checks, no force-push).</dd></dl>
+    <dl class="gterm"><dt>CODEOWNERS</dt><dd>A file mapping paths to the people/teams who must review changes there.</dd></dl>
+    <dl class="gterm"><dt>GitHub Actions</dt><dd>Event-driven automation (CI/CD) defined as YAML workflows in the repo.</dd></dl>
+    <dl class="gterm"><dt>Codespaces</dt><dd>Cloud-hosted, ready-to-code development environments defined by the repo.</dd></dl>
+    <dl class="gterm"><dt>Audit log</dt><dd>An immutable record of who did what and when across the org/enterprise.</dd></dl>
+    <dl class="gterm"><dt>Code Scanning</dt><dd>Automated analysis that finds vulnerabilities in your own source code.</dd></dl>
+    <dl class="gterm"><dt>CodeQL</dt><dd>GitHub's semantic engine that queries code like a database to trace data-flow bugs.</dd></dl>
+    <dl class="gterm"><dt>Secret Scanning</dt><dd>Detects committed credentials; push protection can block them before they land.</dd></dl>
+    <dl class="gterm"><dt>Dependabot</dt><dd>Automation that opens PRs to update vulnerable or outdated dependencies.</dd></dl>
+    <dl class="gterm"><dt>SBOM</dt><dd>Software Bill of Materials — a complete inventory of what's inside your software.</dd></dl>
+    <dl class="gterm"><dt>Attestation / Provenance</dt><dd>Cryptographic proof of how and where a build artifact was produced.</dd></dl>
+    <dl class="gterm"><dt>Copilot Autofix</dt><dd>AI-suggested code fixes attached directly to security alerts.</dd></dl>
+    <dl class="gterm"><dt>Agent Mode</dt><dd>Copilot executing multi-step tasks autonomously, editing files and running commands.</dd></dl>
+    <dl class="gterm"><dt>AI Context</dt><dd>The information Copilot uses to ground a response — open files, repo, attachments.</dd></dl>
+    <dl class="gterm"><dt>Prompt files / Custom instructions</dt><dd>Version-controlled standing guidance so a team's Copilot follows shared rules.</dd></dl>
+  </div>
+
+  <div class="callout key mt-lg"><div class="co-ic">🧭</div><div><h4>Your reusable reasoning trick</h4><p>Meet a new GitHub feature? Ask three questions: <strong>Which layer is it?</strong> (platform / security / AI) · <strong>Which lifecycle phase?</strong> · <strong>What does it produce or consume?</strong> Place it on this map and it'll make sense instantly — you'll be extending the model, not memorizing another isolated feature.</p></div></div>
+</section>
+
+<footer>
+  <div class="f-logo"><span class="grad">⬡ GitHub Platform — Visual Learning Guide</span></div>
+  <p>A self-contained reference for building an intuitive model of GitHub Enterprise, Advanced Security &amp; Copilot Business.</p>
+  <p class="f-disclaimer">Unofficial educational resource. Product capabilities, packaging and licensing evolve continuously — always verify specifics against the <a href="https://docs.github.com" target="_blank" rel="noopener">official GitHub documentation</a> before making decisions.</p>
+</footer>
+
+<script>
+  // scroll progress bar
+  var progress = document.getElementById('progress');
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav .nav-links a'));
+  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function onScroll(){
+    var st = window.scrollY || document.documentElement.scrollTop;
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (h > 0 ? (st / h) * 100 : 0) + '%';
+    var idx = -1;
+    for (var i = 0; i < sections.length; i++){
+      if (sections[i] && sections[i].getBoundingClientRect().top <= 120) idx = i;
+    }
+    links.forEach(function(l, i){ l.classList.toggle('active', i === idx); });
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  // reveal on scroll
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+</script>
+
+</body>
+</html>
